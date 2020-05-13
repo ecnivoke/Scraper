@@ -1,22 +1,20 @@
 <?php 
 
-function connect(){
-	// Define connection
-	$conn = '';
+require_once('../includes/Database.class.php');
+require_once('../includes/Validate.class.php');
 
-	// Try to make connection
-	try {
-	    $conn = new PDO("mysql:host=".SERVERNAME.";dbname=".DATABASE_NAME, USERNAME, PASSWORD);
-	    // Set the PDO error mode to exception
-	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	}
-	// Connection failed
-	catch(PDOException $e) {
-	    echo "Connection failed: " . $e->getMessage();
-	}
+function initDatabase(){
+	// Assemble 
+	$conf['servername']		= SERVERNAME;
+	$conf['database_name']	= DATABASE_NAME;
+	$conf['username']		= USERNAME;
+	$conf['password']		= PASSWORD;
+	$conf['prefix']			= DATABASE_PREFIX;
 
-	// Return connection
-	return $conn;
+	// Create database object
+	$database = new Database($conf);
+
+	return $database;
 }
 
 function d($debug, $highlight = true, $hidden = false){
@@ -47,12 +45,12 @@ function d($debug, $highlight = true, $hidden = false){
 	flush();
 }
 
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+function validate($input){
+	// Validate input
+	$validator 	= new Validate();
+	$result 	= $validator->validate($input);
 
+	return $result;
+}
 
  ?>

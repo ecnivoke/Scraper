@@ -12,7 +12,7 @@ ini_set('display_startup_errors', DEVELOP);
 ini_set("error_reporting", DEVELOP ? E_ALL : DEVELOP);
 
 // Define database configs
-define('DATABASE_NAME', 	'');
+define('DATABASE_NAME', 	'scraper');
 define('SERVERNAME', 		'localhost');
 define('USERNAME', 			'root');
 define('PASSWORD', 			'');

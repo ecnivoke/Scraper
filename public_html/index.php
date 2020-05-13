@@ -2,24 +2,22 @@
 
 // Require files
 require_once('../config/config.php');
+require_once('../config/init_smarty.php');
 require_once('../includes/library.php');
 
-// Require classes
-require_once('../includes/TemplateHandler.class.php');
+// Get page from url
+$controller = !empty($_GET['p']) ? $_GET['p'] : '';
 
-$TemplateHandler = new TemplateHandler();
+if($controller == ''){
+	// Show index page
+	$smarty->display(TEMPLATE_DIR.'index.tpl.php');
+}
+else {
+	// Require page controller
+	require_once('../controllers/'.$controller.'.php');
+}
 
-$y = 'yeet';
-
-$x = array();
-$x['one'] = 'yeet';
-$x['two'] = 'test';
-$x['four'] = '4';
-$x['five'] = '5';
-
-$TemplateHandler->assign('test', 	$x);
-$TemplateHandler->assign('tester', 	$y);
-
-$TemplateHandler->render('home');
+// Exit script
+exit();
 
  ?>

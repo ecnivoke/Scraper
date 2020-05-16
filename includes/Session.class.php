@@ -36,6 +36,21 @@ class Session {
 		setcookie(session_name(),'',0,'/');
 		session_regenerate_id(true);
 	}
+
+	public function login($user){
+		$this->setVar('user_id', 	$user['id']);
+		$this->setVar('username', 	$user['username']);
+	}
+
+	public function logged_in(){
+		if(isset($_SESSION['user_id'])){
+			$result = true;
+		}
+		else {
+			$result = false;
+		}
+		return $result;
+	}
 // End Methods
 
 }

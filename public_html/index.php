@@ -1,15 +1,13 @@
 <?php 
 
 // Require files
-require_once('../config/config.php');
+require('../config/config.php');
 require_once('../config/init_smarty.php');
-require_once('../includes/library.php');
-require_once('../includes/Session.class.php');
+require('../includes/library.php');
+require('../includes/Session.class.php');
 
 // Make session handeler
 $session_handler = new Session();
-
-// $session_handler->setVar('logged_in', false);
 
 // Connect to database
 $database = initDatabase();
@@ -28,15 +26,15 @@ else {
 	$page_path 			= TEMPLATE_DIR.$controller.'.tpl.php';
 
 	// Check if logged in
-	if($session_handler->getVar('logged_in')){
+	if($session_handler->logged_in()){
 		if(file_exists($controller_path)){
 			// Require page controller
-			require_once($controller_path);
+			require($controller_path);
 		}
 		elseif(file_exists($page_path)){
 
-			$smarty->assign('title', $controller);
 			// Show page without controller
+			$smarty->assign('title', $controller);
 			$smarty->display($page_path);
 		}
 		else {
@@ -47,13 +45,13 @@ else {
 			$smarty->display(TEMPLATE_DIR.'error.tpl.php');
 		}
 	}
-	elseif($controller === 'login') {
-		// Redirect to login
-		require_once('../controllers/login.php');
+	elseif($controller === 'login' || $controller === 'register') {
+		// Redirect to login / register
+		require($controller_path);
 	}
-	elseif($controller === 'register') {
-		// Redirect to login
-		require_once('../controllers/register.php');
+	else {
+		// Redirect to index
+		header('Location: index.php');
 	}
 }
 

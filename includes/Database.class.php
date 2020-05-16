@@ -92,12 +92,34 @@ class Database {
 		$query->execute();
 	}
 
-	public function insertUser(){
-		
+	public function createUser($input){
+		// Encrypt password
+		$password = $this->encryptPassword($input['passwordR']);
+
+		// User array
+		$user 				= array();
+		$user['username'] 	= $input['usernameR'];
+		$user['password'] 	= $password;
+
+		// Insert user
+		$this->insert('users', $user);
 	}
 
-	private function insertPassword($pass){
+	private function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){
+		// Hash password 
+		/*
+		PASSWORD_BCRYPT <- standard
+		PASSWORD_ARGON2I
+		PASSWORD_ARGON2ID
+		PASSWORD_DEFAULT
+		*/
+		$password = password_hash($pass, $method, $options);
 
+		return $password;
+	}
+
+	public function test(){
+		echo "database yeet";
 	}
 // End methods
 }

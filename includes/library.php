@@ -1,7 +1,6 @@
 <?php 
 
 require_once('../includes/Database.class.php');
-require_once('../includes/Validate.class.php');
 
 function initDatabase(){
 	// Assemble 
@@ -43,14 +42,6 @@ function d($debug, $highlight = true, $hidden = false){
 
 	// Flush input
 	flush();
-}
-
-function validate($input){
-	// Validate input
-	$validator 	= new Validate();
-	$result 	= $validator->validate($input);
-
-	return $result;
 }
 
  ?>

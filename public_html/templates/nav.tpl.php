@@ -1,5 +1,5 @@
 <div class='row text-center'>
-	{if $smarty.session.logged_in}
+	{if isset($smarty.session.user_id)}
 		<div class='small-3 columns'>
 			<a href="?p=item_list">List</a>
 		</div>

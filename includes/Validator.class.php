@@ -1,19 +1,31 @@
 <?php 
 
-class Validate {
+class Validator {
 
 // Properties
+	private $input;
 	private $valid;
 	private $messages;
 // End Properties
 
-	public function __construct($valid = true, $messages = array()){
+	public function __construct($input, $valid = true, $messages = array()){
+		$this->input 	= $input;
 		$this->valid 	= $valid;
 		$this->messages = $messages;
 	}
 
 // Getters
+	public function getValid(){
+		return $this->valid;
+	}
 
+	public function getInput(){
+		return $this->input;
+	}
+
+	public function getMessages(){
+		return $this->messages;
+	}
 // End Getters
 
 // Setters
@@ -21,11 +33,11 @@ class Validate {
 // End Setters
 
 // Methods
-	public function validate($input){
+	public function validate(){
 
 		// Loop over the input
-		foreach($input as $key => $value){
-			if($key === 'password'){
+		foreach($this->input as $key => $value){
+			if($key === 'password' && !empty($value)){
 				// Validate password strength
 				$uppercase		= preg_match('@[A-Z]@', $value);
 				$lowercase		= preg_match('@[a-z]@', $value);
@@ -38,15 +50,13 @@ class Validate {
 			}
 			if(!empty($value)){
 				// Clean input
-				$input[$key] = $this->cleanInput($value);
+				$this->input[$key] = $this->cleanInput($value);
 			}
-			elseif(1) {
-				$this->messages[$key] = 'Missing';
+			elseif(substr($key, strlen($key)-1) === 'R') {
+				$this->valid = false;
+				$this->messages[$key] = $key.' Missing';
 			}
 		}
-
-		return [$this->valid, $this->messages];
-
 	}
 
 	public function cleanInput($input) {
@@ -55,6 +65,7 @@ class Validate {
 		$input = htmlspecialchars($input);
 		return $input;
 	}
+
 // End Methods
 
 }

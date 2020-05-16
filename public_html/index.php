@@ -6,6 +6,8 @@ require_once('../config/init_smarty.php');
 require('../includes/library.php');
 require('../includes/Session.class.php');
 
+session_start();
+
 // Make session handeler
 $session_handler = new Session();
 
@@ -15,7 +17,7 @@ $database = initDatabase();
 // Get page from url
 $controller = !empty($_GET['p']) ? $_GET['p'] : '';
 
-if($controller == ''){
+if($controller === ''){
 	$smarty->assign('title', 'Home');
 	// Show index page
 	$smarty->display(TEMPLATE_DIR.'index.tpl.php');

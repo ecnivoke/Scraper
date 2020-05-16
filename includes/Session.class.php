@@ -7,8 +7,7 @@ class Session {
 // End Properties
 
 	public function __construct(){
-		// Start session
-		session_start();
+
 	}
 
 // Getters
@@ -34,13 +33,18 @@ class Session {
 		session_destroy();
 		session_write_close();
 		setcookie(session_name(),'',0,'/');
-		session_regenerate_id(true);
+		// session_regenerate_id(true);
 	}
 
 	public function login($user){
 		$this->setVar('user_id', 	$user['id']);
 		$this->setVar('username', 	$user['username']);
 	}
+
+	// public function logout(){ // Not working, not used
+	// 	$this->unsetVar($user['id']);
+	// 	$this->unsetVar($user['username']);
+	// }
 
 	public function logged_in(){
 		if(isset($_SESSION['user_id'])){

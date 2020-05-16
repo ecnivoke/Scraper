@@ -15,28 +15,34 @@ if(!empty($_POST)){
 
 	if($valid === true){
 		// Create the user
-		$database->createUser($input);
-		$user = $database->getRows("
-			SELECT
-				users.id,
-				users.username,
-				users.password
-			FROM 
-				users
-			WHERE
-				users.username = '".$input['usernameR']."'
-		")[0];
-		// Login the user
-		$session_handler->login($user);
+		$error = $database->createUser($input);
 
-		// Redirect
-		header('Location: ?p=item_list');
-		exit();
+		// If error is empty its ok
+		if(empty($error)){
+			$user = $database->getRows("
+				SELECT
+					users.id,
+					users.username,
+					users.password
+				FROM 
+					users
+				WHERE
+					users.username = '".$input['usernameR']."'
+			")[0];
+			// Login the user
+			$session_handler->login($user);
+
+			// Redirect
+			header('Location: ?p=item_list');
+			exit();
+		}
 	}
 
 	// Set page variables
 	$smarty->assign('input', 	$input);
 	$smarty->assign('messages', $messages);
+	$smarty->assign('messages', $messages);
+	$smarty->assign('errors', 	$error);
 }
 
 // Set page variables

@@ -9,7 +9,7 @@ class Database {
 	private $username;
 	private $password;
 	private $prefix;
-	public $success;
+	public 	$messages = array();
 // End Properties
 
 	public function __construct($conf){
@@ -36,12 +36,12 @@ class Database {
 		    // Set the PDO error mode to exception
 		    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		    // Set success message
-		    $this->success = 1;
+		    $this->messages['connection'] = 1;
 		}
 		// Connection failed
 		catch(PDOException $e) {
 		    echo "Connection failed: " . $e->getMessage();
-		    $this->success = 0;
+		    $this->messages['connection'] = 0;
 		}
 
 		// Return connection
@@ -79,7 +79,6 @@ class Database {
 			else {
 				$sql .= ",'".$value."'";
 			}
-
 		}
 
 		// End of sql
@@ -93,16 +92,40 @@ class Database {
 	}
 
 	public function createUser($input){
-		// Encrypt password
-		$password = $this->encryptPassword($input['passwordR']);
+		// Set error to empty
+		$error = '';
 
-		// User array
-		$user 				= array();
-		$user['username'] 	= $input['usernameR'];
-		$user['password'] 	= $password;
+		// Check for duplicate username
+		$duplicate = $this->getRows("
+			SELECT 
+				users.username
+			FROM
+				users 
+			WHERE 
+				users.username = '".$input['usernameR']."'
+			LIMIT 1
+		");
 
-		// Insert user
-		$this->insert('users', $user);
+		// Create user
+		if(empty($duplicate)){
+			// Encrypt password
+			$password = $this->encryptPassword($input['passwordR']);
+
+			// User array
+			$user 				= array();
+			$user['username'] 	= $input['usernameR'];
+			$user['password'] 	= $password;
+
+			// Insert user
+			$this->insert('users', $user);
+		}
+		else {
+			// Set error message
+			$error = 'Username already exists';
+		}
+
+		// Output
+		return $error;
 	}
 
 	private function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){

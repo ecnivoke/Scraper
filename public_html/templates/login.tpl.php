@@ -3,6 +3,7 @@
 <form method="POST" action="?p=login" enctype="multipart/form-data">
 	<div class='row'>
 		<div class='small-10 columns small-centered'>
+			<h1>{$title}</h1>
 			<div class="row">
 				<div class='small-3 columns'>
 					<label for='username'>Username:</label>
@@ -15,6 +16,13 @@
 					<small><b class='error'>{if !empty($messages.passwordR)}{$messages.passwordR}{/if}</b></small>
 				</div>
 			</div>
+			{if !empty($errors)}
+				<div class="row">
+					<div class='small-12 columns'>
+						<b class='error'>{$errors}</b>
+					</div>
+				</div>
+			{/if}
 			<div class="row">
 				<div class='small-3 columns'>
 					<input type="submit" value="Login">

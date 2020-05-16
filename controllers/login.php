@@ -29,9 +29,13 @@ if(!empty($_POST)){
 		header('Location: ?p=item_list');
 		exit();
 	}
+	else {
+		$errors = 'Username or password incorrect!';
+	}
 
 	$smarty->assign('input', 	$input);
 	$smarty->assign('messages', $messages);
+	$smarty->assign('errors', 	$errors);
 }
 
 // Set page variables

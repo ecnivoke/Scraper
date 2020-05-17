@@ -41,6 +41,24 @@ class Session {
 		$this->setVar('username', 	$user['username']);
 	}
 
+	public function getUser($item = ''){
+		// Declade variables
+		$result = array();
+
+		// Set output to only requested $item
+		if(!empty($item)){
+			$result[$item] = $this->getVar($item);
+		}
+		else {
+			// Set output to everything
+			$result["user_id"] 	= $this->getVar('user_id');
+			$result["username"] = $this->getVar('username');
+		}
+
+		// Output
+		return $result;
+	}
+
 	// public function logout(){ // Not working, not used
 	// 	$this->unsetVar($user['id']);
 	// 	$this->unsetVar($user['username']);

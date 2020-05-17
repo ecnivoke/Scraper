@@ -3,11 +3,20 @@
 class Session {
 
 // Properties
-	
+	private $remember_time;
 // End Properties
 
-	public function __construct(){
+	public function __construct($time){
 
+		$this->remember_time = $time;
+
+		if(session_id() !== null){
+			// Set client session id timer
+			session_set_cookie_params($this->remember_time);
+			
+			// Start session
+			session_start();
+		}
 	}
 
 // Getters

@@ -6,10 +6,8 @@ require_once('../config/init_smarty.php');
 require('../includes/library.php');
 require('../includes/Session.class.php');
 
-session_start();
-
 // Make session handeler
-$session_handler = new Session();
+$session_handler = new Session(SESSION_TIME);
 
 // Connect to database
 $database = initDatabase();

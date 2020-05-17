@@ -59,11 +59,6 @@ class Session {
 		return $result;
 	}
 
-	// public function logout(){ // Not working, not used
-	// 	$this->unsetVar($user['id']);
-	// 	$this->unsetVar($user['username']);
-	// }
-
 	public function logged_in(){
 		if(isset($_SESSION['user_id'])){
 			$result = true;

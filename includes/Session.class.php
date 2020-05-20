@@ -48,6 +48,8 @@ class Session {
 	public function login($user){
 		$this->setVar('user_id', 	$user['id']);
 		$this->setVar('username', 	$user['username']);
+		$this->setVar('email', 		$user['email']);
+		$this->setVar('user_group', $user['user_group']);
 	}
 
 	public function getUser($item = ''){
@@ -60,8 +62,10 @@ class Session {
 		}
 		else {
 			// Set output to everything
-			$result["user_id"] 	= $this->getVar('user_id');
-			$result["username"] = $this->getVar('username');
+			$result["user_id"] 		= $this->getVar('user_id');
+			$result["username"] 	= $this->getVar('username');
+			$result["email"] 		= $this->getVar('email');
+			$result["user_group"] 	= $this->getVar('user_group');
 		}
 
 		// Output

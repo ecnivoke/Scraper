@@ -3,6 +3,9 @@
 // Require classes
 require('../includes/Validator.class.php');
 
+// Declade variable
+$errors = '';
+
 if(!empty($_POST)){
 	// Create validator and validate input
 	$validator = new Validator($_POST);
@@ -15,19 +18,23 @@ if(!empty($_POST)){
 
 	if($valid === true){
 		// Create the user
-		$error = $database->createUser($input);
+		$errors = $database->createUser($input);
 
 		// If error is empty its ok
-		if(empty($error)){
+		if(empty($errors)){
 			$user = $database->getRows("
 				SELECT
 					users.id,
 					users.username,
-					users.password
+					users.password,
+					users.email,
+					user_groups.role AS user_group
 				FROM 
-					users
-				WHERE
-					users.username = '".$input['usernameR']."'
+					users,
+					user_groups
+				WHERE 1 = 1
+					AND user_groups.id = users.user_group_id
+					AND users.username = '".$input['usernameR']."'
 			")[0];
 			// Login the user
 			$session_handler->login($user);
@@ -38,11 +45,11 @@ if(!empty($_POST)){
 		}
 	}
 
-	// Set page variables
+	// Assign template variables
 	$smarty->assign('input', 	$input);
 	$smarty->assign('messages', $messages);
 	$smarty->assign('messages', $messages);
-	$smarty->assign('errors', 	$error);
+	$smarty->assign('errors', 	$errors);
 }
 
 // Set page variables

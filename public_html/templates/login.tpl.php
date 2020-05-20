@@ -11,7 +11,7 @@
 					<small><b class='error'>{if !empty($messages.usernameR)}{$messages.usernameR}{/if}</b></small>
 				</div>
 				<div class='small-3 columns end'>
-					<label for='password'>password:</label>
+					<label for='password'>Password:</label>
 					<input id='password' type="password" name="passwordR" value="{if !empty($input)}{$input.passwordR}{/if}">
 					<small><b class='error'>{if !empty($messages.passwordR)}{$messages.passwordR}{/if}</b></small>
 				</div>

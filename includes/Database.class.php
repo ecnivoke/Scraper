@@ -112,9 +112,11 @@ class Database {
 			$password = $this->encryptPassword($input['passwordR']);
 
 			// User array
-			$user 				= array();
-			$user['username'] 	= $input['usernameR'];
-			$user['password'] 	= $password;
+			$user 					= array();
+			$user['username'] 		= $input['usernameR'];
+			$user['password'] 		= $password;
+			$user['email'] 			= $input['emailR'];
+			$user['user_group_id'] 	= !empty($input['user_group']) ? $input['user_group'] : 3; // Default: default user
 
 			// Insert user
 			$this->insert('users', $user);

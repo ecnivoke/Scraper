@@ -4,9 +4,10 @@
 require('../includes/Scraper.class.php');
 
 // Declade variables
-$results = array();
+$scrapers 	= array();
+$results 	= array();
 
-// Get items to scrape
+// Get items to scrape from database
 $items = $database->getRows("
 	SELECT 
 		scrape_items.id,
@@ -19,18 +20,19 @@ $items = $database->getRows("
 		AND scrape_items.user_id = ".$session_handler->getVar('user_id')."
 ");
 
-// d($items);
-
+// Create a object per item
 foreach($items as $item){
-
-	$results[] = new Scraper($item['item_url']);
+	$scrapers[] = new Scraper($item['item_url']);
 }
 
-foreach ($results as $site) {
-	$site->scrape();
+// Scrape the item from the site
+foreach($scrapers as $scraper) {
+	$results[] = $scraper->scrape();
+}
 
-	
-	d($site->results);
+// Add item name to results
+for($i = 0; $i < count($results); $i++){
+	$results[$i]['name'] = $items[$i]['item_name'];
 }
 
 // Set page variables

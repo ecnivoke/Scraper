@@ -91,61 +91,6 @@ class Database {
 		$query->execute();
 	}
 
-	public function createUser($input){
-		// Set error to empty
-		$error = '';
-
-		// Check for duplicate username
-		$duplicate = $this->getRows("
-			SELECT 
-				users.username
-			FROM
-				users 
-			WHERE 
-				users.username = '".$input['usernameR']."'
-			LIMIT 1
-		");
-
-		// Create user
-		if(empty($duplicate)){
-			// Encrypt password
-			$password = $this->encryptPassword($input['passwordR']);
-
-			// User array
-			$user 					= array();
-			$user['username'] 		= $input['usernameR'];
-			$user['password'] 		= $password;
-			$user['email'] 			= $input['emailR'];
-			$user['user_group_id'] 	= !empty($input['user_group']) ? $input['user_group'] : 3; // Default: default user
-
-			// Insert user
-			$this->insert('users', $user);
-		}
-		else {
-			// Set error message
-			$error = 'Username already exists';
-		}
-
-		// Output
-		return $error;
-	}
-
-	private function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){
-		// Hash password 
-		/*
-		PASSWORD_BCRYPT <- standard
-		PASSWORD_ARGON2I
-		PASSWORD_ARGON2ID
-		PASSWORD_DEFAULT
-		*/
-		$password = password_hash($pass, $method, $options);
-
-		return $password;
-	}
-
-	public function test(){
-		echo "database yeet";
-	}
 // End methods
 }
 

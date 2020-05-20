@@ -13,3 +13,4 @@
 <body>
 	<div class='container'>
 		{include 'nav.tpl.php'}
+		{include 'popup.tpl.php'}

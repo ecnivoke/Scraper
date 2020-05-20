@@ -2,6 +2,7 @@
 
 // Require classes
 require('../includes/Validator.class.php');
+require('../modals/Users.class.php');
 
 // Declade variable
 $errors = '';
@@ -15,33 +16,31 @@ if(!empty($_POST)){
 	$input 		= $validator->getInput();
 	$valid 		= $validator->getValid();
 	$messages 	= $validator->getMessages();
+	$popups 	= array();
 
 	if($valid === true){
+		// Create user handler
+		$user_h = new Users($database);
+
 		// Create the user
-		$errors = $database->createUser($input);
+		$errors = $user_h->createUser($input);
 
 		// If error is empty its ok
-		if(empty($errors)){
-			$user = $database->getRows("
-				SELECT
-					users.id,
-					users.username,
-					users.password,
-					users.email,
-					user_groups.role AS user_group
-				FROM 
-					users,
-					user_groups
-				WHERE 1 = 1
-					AND user_groups.id = users.user_group_id
-					AND users.username = '".$input['usernameR']."'
-			")[0];
+		if(empty($errors) && !isset($input['user_group'])){
+			$user = $user_h->getUser($input['usernameR'])[0];
 			// Login the user
 			$session_handler->login($user);
 
 			// Redirect
 			header('Location: ?p=item_list');
 			exit();
+		}
+		else {
+			// Set popup message
+			$popups[] = "User '".$input['usernameR']."' is created succesfully!";
+
+			// Clear input
+			$input = array();
 		}
 	}
 
@@ -50,6 +49,7 @@ if(!empty($_POST)){
 	$smarty->assign('messages', $messages);
 	$smarty->assign('messages', $messages);
 	$smarty->assign('errors', 	$errors);
+	$smarty->assign('popups', 	$popups);
 }
 
 // Set page variables

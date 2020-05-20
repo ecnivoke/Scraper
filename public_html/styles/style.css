@@ -9,3 +9,7 @@ b.error {
 small.sale {
 	color: #52b329; /* lime / green ish */
 }
+
+*.success {
+	color: #52b329; /* lime / green ish */
+}

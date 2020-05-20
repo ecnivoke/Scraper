@@ -5,10 +5,10 @@
 				<a href="?p=item_list">List</a>
 			</div>
 			<div class='small-3 columns'>
-				<a href="?p="></a>
+				<a href="?p=add_item">Add item</a>
 			</div>
 			<div class='small-3 columns'>
-				<a href="?p="></a>
+				<a href="?p=register">Register new user</a>
 			</div>
 			<div class='small-3 columns'>
 				<a href="?p=logout">Logout</a>

@@ -2,23 +2,17 @@
 
 // Require classes
 require('../includes/Scraper.class.php');
+require('../modals/Items.class.php');
 
 // Declade variables
 $scrapers 	= array();
 $results 	= array();
 
+// Create item handler
+$item_h = new Items($database);
+
 // Get items to scrape from database
-$items = $database->getRows("
-	SELECT 
-		scrape_items.id,
-		scrape_items.item_url,
-		scrape_items.item_name,
-		scrape_items.user_id
-	FROM 
-		scrape_items
-	WHERE 1 = 1
-		AND scrape_items.user_id = ".$session_handler->getVar('user_id')."
-");
+$items = $item_h->getItemsByUser($session_handler->getVar('user_id'));
 
 // Create a object per item
 foreach($items as $item){

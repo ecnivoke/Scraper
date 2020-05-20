@@ -2,6 +2,7 @@
 
 // Require classes
 require('../includes/Validator.class.php');
+require('../modals/Users.class.php');
 
 // Declade variable
 $errors = '';
@@ -16,39 +17,35 @@ if(!empty($_POST)){
 	$valid 		= $validator->getValid();
 	$messages 	= $validator->getMessages();
 
-	// Get user
-	$user = $database->getRows("
-		SELECT
-			users.id,
-			users.username,
-			users.password,
-			users.email,
-			user_groups.role AS user_group
-		FROM 
-			users,
-			user_groups
-		WHERE 1 = 1
-			AND (users.username 		= '".$input['usernameR']."'
-			OR 	 users.email 			= '".$input['usernameR']."')
-			AND users.user_group_id 	= user_groups.id
-	");
+	if($valid === true){
+		// Create user class
+		$user_h = new Users($database);
 
-	// Remove this and you get errors
-	if(!empty($user)){
-		$user = $user[0];
-	}
+		// Get user
+		$user = $user_h->getUser($input['usernameR']);
 
-	// Verity password
-	if(!empty($user['password'])){
-		if(password_verify($input['passwordR'], $user['password'])){
-			$session_handler->login($user);
-
-			// Redirect
-			header('Location: ?p=item_list');
-			exit();
+		// Remove this and you get errors
+		if(!empty($user)){
+			$user = $user[0];
 		}
-		else {
-			$errors = 'Username or password incorrect!';
+
+		// Verity password
+		if(!empty($user['password'])){
+			if($user['active'] === '1'){
+				if(password_verify($input['passwordR'], $user['password'])){
+					$session_handler->login($user);
+
+					// Redirect
+					header('Location: ?p=item_list');
+					exit();
+				}
+				else {
+					$errors = 'Username or password incorrect!';
+				}
+			}
+			else {
+				$errors = 'This user is set to inactive!';
+			}
 		}
 	}
 

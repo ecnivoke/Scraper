@@ -15,6 +15,10 @@
 					<input id='password' type="password" name="passwordR" value="{if !empty($input.passwordR)}{$input.passwordR}{/if}">
 					<small><b class='error'>{if !empty($messages.passwordR)}{$messages.passwordR}{/if}</b></small>
 				</div>
+				<div class='small-3 columns end'>
+					<label for='remember'>Remember me:</label>
+					<input id='remember' type="checkbox" name="remember" {if !empty($input.remember)}checked{/if}>
+				</div>
 			</div>
 			{if !empty($errors)}
 				<div class="row">

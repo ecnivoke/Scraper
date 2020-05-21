@@ -35,6 +35,11 @@ if(!empty($_POST)){
 				if(password_verify($input['passwordR'], $user['password'])){
 					$session_handler->login($user);
 
+					// Remember user
+					if(!empty($input['remember'])){
+						$session_handler->rememberUser($user);
+					}
+
 					// Redirect
 					header('Location: ?p=item_list');
 					exit();

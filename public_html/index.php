@@ -25,6 +25,15 @@ else {
 	$controller_path 	= '../controllers/'.$controller.'.php';
 	$page_path 			= TEMPLATE_DIR.$controller.'.tpl.php';
 
+	// User is not logged in yet, but cookies are set.
+	if(	!empty($session_handler->getVar("user_id")) &&
+		$session_handler->logged_in() === false 	){
+
+		// Login remembered user
+		$user = $session_handler->getUser();
+		$session_handler->login($user);
+	}
+
 	// Check if logged in
 	if($session_handler->logged_in()){
 		if(file_exists($controller_path)){

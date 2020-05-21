@@ -4,6 +4,7 @@ class Session {
 
 // Properties
 	private $remember_time;
+	private $cookie_time = 30000000; // About 1 year
 // End Properties
 
 	public function __construct($time){
@@ -21,7 +22,31 @@ class Session {
 
 // Getters
 	public function getVar($name){
-		return $_SESSION[$name];
+		// Declare variable
+		$output = '';
+
+		if(!empty($_SESSION[$name])){
+			$output = $_SESSION[$name];
+		}
+		elseif(!empty($_COOKIE[$name])){
+			$output = $_COOKIE[$name];
+		}
+
+		// Output
+		return $output;
+	}
+
+	public function checkCookie($name){
+		// Declade variable
+		$output = true;
+
+		// Check if cookie exists
+		if(!isset($_COOKIE[$name])){
+			$output = false;
+		}
+
+		// Output
+		return $output;
 	}
 // End Getters
 
@@ -81,6 +106,15 @@ class Session {
 		}
 		return $result;
 	}
+
+	public function rememberUser($user){
+		// Set cookies
+		setcookie("user_id", 	$user['id'], 			$this->cookie_time);
+		setcookie("username", 	$user['username'], 		$this->cookie_time);
+		setcookie("email", 		$user['email'], 		$this->cookie_time);
+		setcookie("user_group", $user['user_group'], 	$this->cookie_time);
+	}
+
 // End Methods
 
 }

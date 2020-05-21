@@ -71,6 +71,7 @@ class Session {
 	}
 
 	public function login($user){
+		// Store variable
 		$this->setVar('user_id', 	$user['id']);
 		$this->setVar('username', 	$user['username']);
 		$this->setVar('email', 		$user['email']);
@@ -98,21 +99,24 @@ class Session {
 	}
 
 	public function logged_in(){
+		// Check if user is logged in
 		if(isset($_SESSION['user_id'])){
 			$result = true;
 		}
 		else {
 			$result = false;
 		}
+
+		// Output
 		return $result;
 	}
 
 	public function rememberUser($user){
 		// Set cookies
-		setcookie("user_id", 	$user['id'], 			$this->cookie_time);
-		setcookie("username", 	$user['username'], 		$this->cookie_time);
-		setcookie("email", 		$user['email'], 		$this->cookie_time);
-		setcookie("user_group", $user['user_group'], 	$this->cookie_time);
+		setcookie("user_id", 	$user['id'], 			time() + $this->cookie_time);
+		setcookie("username", 	$user['username'], 		time() + $this->cookie_time);
+		setcookie("email", 		$user['email'], 		time() + $this->cookie_time);
+		setcookie("user_group", $user['user_group'], 	time() + $this->cookie_time);
 	}
 
 // End Methods

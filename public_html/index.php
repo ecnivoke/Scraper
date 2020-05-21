@@ -27,7 +27,7 @@ else {
 
 	// User is not logged in yet, but cookies are set.
 	if(	!empty($session_handler->getVar("user_id")) &&
-		$session_handler->logged_in() === false 	){
+		$session_handler->logged_in() == false 	){
 
 		// Login remembered user
 		$user = $session_handler->getUser();

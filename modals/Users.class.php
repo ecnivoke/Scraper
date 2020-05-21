@@ -82,7 +82,7 @@ class Users {
 	private function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){
 		// Hash password 
 		/*
-		PASSWORD_BCRYPT <- standard
+		PASSWORD_BCRYPT <- current strongest
 		PASSWORD_ARGON2I
 		PASSWORD_ARGON2ID
 		PASSWORD_DEFAULT

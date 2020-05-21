@@ -75,7 +75,7 @@ class Items {
 				LIMIT ".$this->limit;
 		}
 
-		// Get user
+		// Get items
 		$results = $this->database->getRows($this->sql['get_items']);
 
 		// Output

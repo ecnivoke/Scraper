@@ -14,6 +14,29 @@ class Users {
 // Setters
 // End Setters
 // Methods
+	public function getAllUsers(){
+		// Build sql
+		$this->sql['get_all_users'] = "SELECT
+			users.id,
+			users.username,
+			users.password,
+			users.email,
+			users.status,
+			user_groups.role AS user_group
+		FROM 
+			users,
+			user_groups
+		WHERE 1 = 1
+			AND users.user_group_id = user_groups.id
+		ORDER BY 
+			users.id ASC";
+
+		// Get user
+		$results = $this->database->getRows($this->sql['get_all_users']);
+
+		// Output
+		return $results;
+	}
 
 	public function getUser($username){
 		// Build sql
@@ -22,7 +45,7 @@ class Users {
 			users.username,
 			users.password,
 			users.email,
-			users.active,
+			users.status,
 			user_groups.role AS user_group
 		FROM 
 			users,
@@ -30,6 +53,29 @@ class Users {
 		WHERE 1 = 1
 			AND (users.username 		= '".$username."'
 			OR 	 users.email 			= '".$username."')
+			AND users.user_group_id 	= user_groups.id";
+
+		// Get user
+		$results = $this->database->getRows($this->sql['get_user']);
+
+		// Output
+		return $results;
+	}
+
+	public function getUserById($id){
+		// Build sql
+		$this->sql['get_user'] = "SELECT
+			users.id,
+			users.username,
+			users.password,
+			users.email,
+			users.status,
+			user_groups.role AS user_group
+		FROM 
+			users,
+			user_groups
+		WHERE 1 = 1
+			AND users.id 				= ".$id."
 			AND users.user_group_id 	= user_groups.id";
 
 		// Get user
@@ -65,7 +111,7 @@ class Users {
 			$user['password'] 		= $password;
 			$user['email'] 			= $input['emailR'];
 			$user['user_group_id'] 	= !empty($input['user_group']) ? $input['user_group'] : 3; // Default: default user
-			$user['active'] 		= 1; // Default: active
+			$user['status'] 		= 'a'; // Default: active
 
 			// Insert user
 			$this->database->insert('users', $user);

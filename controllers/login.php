@@ -31,7 +31,7 @@ if(!empty($_POST)){
 
 		// Verity password
 		if(!empty($user['password'])){
-			if($user['active'] === '1'){
+			if($user['status'] === 'a'){
 				if(password_verify($input['passwordR'], $user['password'])){
 					$session_handler->login($user);
 
@@ -49,7 +49,7 @@ if(!empty($_POST)){
 				}
 			}
 			else {
-				$errors = 'This user is set to inactive!';
+				$errors = 'This user can\'t login right now!';
 			}
 		}
 	}

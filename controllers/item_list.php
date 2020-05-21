@@ -7,31 +7,42 @@ require('../modals/Items.class.php');
 // Declade variables
 $scrapers 	= array();
 $results 	= array();
+$page 		= !empty($_GET['c']) ? $_GET['c'] : 1; // Default: page 1
 
 // Create item handler
 $item_h = new Items($database);
 
-// Get items to scrape from database
-$items = $item_h->getItemsByUser($session_handler->getVar('user_id'));
+// Count items
+$item_count  = $item_h->countItemsByUser($session_handler->getVar('user_id'))[0];
+$item_count  = $item_count[0];
+$pages_count = round($item_count / 3);
 
-// Create a object per item
-foreach($items as $item){
-	$scrapers[] = new Scraper($item['item_url']);
-}
+if($item_count > 0){ // moet > zijn
+	// Get items to scrape from database
+	$items = $item_h->getItemsByUser($session_handler->getVar('user_id'), $page);
 
-// Scrape the item from the site
-foreach($scrapers as $scraper) {
-	$results[] = $scraper->scrape();
-}
+	// Create a object per item
+	foreach($items as $item){
+		$scrapers[] = new Scraper($item['item_url']);
+	}
 
-// Add item name to results
-for($i = 0; $i < count($results); $i++){
-	$results[$i]['name'] = $items[$i]['item_name'];
+	// Scrape the item from the site
+	foreach($scrapers as $scraper) {
+		$results[] = $scraper->scrape();
+	}
+
+	// Add item name, url to results
+	for($i = 0; $i < count($results); $i++){
+		$results[$i]['name'] 	= $items[$i]['item_name'];
+		$results[$i]['url'] 	= $items[$i]['item_url'];
+	}
 }
 
 // Set page variables
 $smarty->assign('title',	'Items');
 $smarty->assign('results',	$results);
+$smarty->assign('count', 	$pages_count);
+$smarty->assign('page', 	$page);
 
 // Display page
 $smarty->display('item_list.tpl.php');

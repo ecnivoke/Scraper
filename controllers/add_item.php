@@ -2,6 +2,7 @@
 
 // Require classes
 require('../includes/Validator.class.php');
+require('../modals/Items.class.php');
 
 // Declade variable
 $errors = '';
@@ -15,12 +16,27 @@ if(!empty($_POST)){
 	$input 		= $validator->getInput();
 	$valid 		= $validator->getValid();
 	$messages 	= $validator->getMessages();
+	$popups 	= array();
 
+	if($valid){
+		// Create item handler
+		$item_h = new Items($database);
+
+		// Add item
+		$item_h->addItem($input, $session_handler->getUser('user_id'));
+
+		// Set popup message
+		$popups[] = "Item '".$input['item_nameR']."' is created succesfully!";
+
+		// Clear input
+		$input = array();
+	}
 
 	// Assign template variables
 	$smarty->assign('input', 	$input);
 	$smarty->assign('messages', $messages);
 	$smarty->assign('errors', 	$errors);
+	$smarty->assign('popups', 	$popups);
 }
 
 // Set page variables

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2020 at 02:54 PM
+-- Generation Time: May 22, 2020 at 03:28 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -29,15 +29,17 @@ SET time_zone = "+00:00";
 INSERT INTO `scrape_items` (`id`, `item_url`, `item_name`, `user_id`) VALUES
 (1, 'https://www.coolblue.nl/product/817221/samsung-galaxy-watch-46mm-silver.html', 'Smartwatch', 15),
 (2, 'https://www.coolblue.nl/product/826125/logitech-g935-wireless-7-1-surround-sound-lightsync-gaming-headset.html', 'headset', 15),
-(3, 'https://www.coolblue.nl/product/835083/nintendo-switch-lite-grijs.html', 'nintendo switch', 15);
+(3, 'https://www.coolblue.nl/product/835083/nintendo-switch-lite-grijs.html', 'nintendo switch', 15),
+(4, 'https://www.coolblue.nl/product/667905/apple-magic-mouse-2.html', 'muis', 15),
+(5, 'https://www.coolblue.nl/product/667905/apple-magic-mouse-2.html', 'muis', 15);
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `user_group_id`) VALUES
-(15, 'vince', '$2y$10$a2N4sYrV2ZH73qfdNjfNEenkNGOA94uAVl3hiMyoAZZKaw0OB8r5S', '', 1),
-(20, 'test', '$2y$10$0CqUnr9p4vOLc.zSmIoLf.mXDTg6/VV6kwpfTNEhTWA3ICHoAKnaC', 'test@test.com', 1);
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `user_group_id`, `status`) VALUES
+(15, 'vince', '$2y$10$a2N4sYrV2ZH73qfdNjfNEenkNGOA94uAVl3hiMyoAZZKaw0OB8r5S', 'vince@vince', 1, 'a'),
+(25, 'pieter', '$2y$10$8uX8znMqDReRUXyN/PtKLeigVEwzaBl6LR2tW0s8Ap.Iavj66h4gG', 'pieter@piet.com', 3, 'a');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

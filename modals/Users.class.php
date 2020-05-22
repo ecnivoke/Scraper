@@ -41,7 +41,7 @@ class Users {
 	public function getUser($username){
 		// Build sql
 		$this->sql['get_user'] = "SELECT
-			users.id,
+			users.id 		AS user_id,
 			users.username,
 			users.password,
 			users.email,

@@ -62,6 +62,9 @@ class Session {
 
 // Methods
 	public function kill(){
+		// Log out cookies
+		$this->logout();
+
 		// Kill session
 		session_unset();
 		session_destroy();
@@ -70,9 +73,17 @@ class Session {
 		// session_regenerate_id(true);
 	}
 
+	public function logout(){
+		// Set cookies
+		setcookie("user_id", 	$user['user_id'], 		time() - $this->cookie_time);
+		setcookie("username", 	$user['username'], 		time() - $this->cookie_time);
+		setcookie("email", 		$user['email'], 		time() - $this->cookie_time);
+		setcookie("user_group", $user['user_group'], 	time() - $this->cookie_time);
+	}
+
 	public function login($user){
 		// Store variable
-		$this->setVar('user_id', 	$user['id']);
+		$this->setVar('user_id', 	$user['user_id']);
 		$this->setVar('username', 	$user['username']);
 		$this->setVar('email', 		$user['email']);
 		$this->setVar('user_group', $user['user_group']);
@@ -113,7 +124,7 @@ class Session {
 
 	public function rememberUser($user){
 		// Set cookies
-		setcookie("user_id", 	$user['id'], 			time() + $this->cookie_time);
+		setcookie("user_id", 	$user['user_id'], 		time() + $this->cookie_time);
 		setcookie("username", 	$user['username'], 		time() + $this->cookie_time);
 		setcookie("email", 		$user['email'], 		time() + $this->cookie_time);
 		setcookie("user_group", $user['user_group'], 	time() + $this->cookie_time);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2020 at 03:28 PM
+-- Generation Time: May 23, 2020 at 09:25 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -32,7 +32,10 @@ CREATE TABLE `scrape_items` (
   `id` int(11) NOT NULL,
   `item_url` varchar(255) NOT NULL,
   `item_name` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `status` enum('a','i','d') NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -47,7 +50,9 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `user_group_id` int(11) NOT NULL,
-  `status` enum('a','i','d') NOT NULL
+  `status` enum('a','i','d') NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -59,6 +64,22 @@ CREATE TABLE `users` (
 CREATE TABLE `user_groups` (
   `id` int(11) NOT NULL,
   `role` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_token_auth`
+--
+
+CREATE TABLE `user_token_auth` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `selector_hash` varchar(255) NOT NULL,
+  `expired` tinyint(1) NOT NULL DEFAULT 0,
+  `expire_date` date NOT NULL DEFAULT current_timestamp(),
+  `created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -85,6 +106,12 @@ ALTER TABLE `user_groups`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_token_auth`
+--
+ALTER TABLE `user_token_auth`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -104,6 +131,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_groups`
 --
 ALTER TABLE `user_groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_token_auth`
+--
+ALTER TABLE `user_token_auth`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 

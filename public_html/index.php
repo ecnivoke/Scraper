@@ -8,17 +8,35 @@ require('../includes/Session.class.php');
 
 // Make session handeler
 $session_handler = new Session(SESSION_TIME);
+$logged_in 		 = $session_handler->logged_in();
 
 // Connect to database
 $database = initDatabase();
 
 // User is not logged in yet, but cookies are set.
-if(	!empty($session_handler->getVar("user_id")) &&
-	$session_handler->logged_in() == false 	){
+if(	!empty($session_handler->getVar('username')) &&
+	!empty($session_handler->getVar('random_password')) &&
+	!empty($session_handler->getVar('random_selector')) &&
+	$logged_in == false ){
 
-	// Login remembered user
-	$user = $session_handler->getUser();
-	$session_handler->login($user);
+	// Require User modal
+	require('../modals/Users.class.php');
+
+	// Create a new user handler
+	$user_h = new Users($database);
+
+	// Get the user token
+	$user_token = $user_h->getTokenByUser($session_handler->getVar('username'))[0];
+
+	// Verify tokens and expire date
+	if($user_token['expire_date'] >= date('Y-m-d') &&
+		password_verify($session_handler->getVar('random_password'), $user_token['password_hash']) &&
+		password_verify($session_handler->getVar('random_selector'), $user_token['selector_hash'])){
+
+		// Login user
+		$user = $user_h->getUser($user_token['username'])[0];
+		$session_handler->login($user);
+	}
 }
 
 // Get page from url
@@ -35,7 +53,7 @@ else {
 	$page_path 			= TEMPLATE_DIR.$controller.'.tpl.php';
 
 	// Check if logged in
-	if($session_handler->logged_in()){
+	if($logged_in){
 		if(file_exists($controller_path)){
 			// Require page controller
 			require($controller_path);

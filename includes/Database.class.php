@@ -10,6 +10,8 @@ class Database {
 	private $password;
 	private $prefix;
 	public 	$messages = array();
+
+	protected static $sql = array();
 // End Properties
 
 	public function __construct($conf){
@@ -40,7 +42,7 @@ class Database {
 		}
 		// Connection failed
 		catch(PDOException $e) {
-		    echo "Connection failed: " . $e->getMessage();
+		    $this->messages['connection_error'] = $e->getMessage();
 		    $this->messages['connection'] = 0;
 		}
 
@@ -48,7 +50,12 @@ class Database {
 		return $conn;
 	}
 
+	/*
+	* 	For this function the first column of the table has to be primary auto-increment key
+	*/
 	public function getRows($sql){
+		// Push sql to debug
+		$this::$sql[] = $sql;
 
 		// Prepare SQL query
 		$query = $this->connect()->prepare($sql);
@@ -63,6 +70,14 @@ class Database {
 		return $results;
 	}
 
+/*
+	* 	For this function the first column of the table has to be primary auto-increment key
+	* 	Expected input:
+	* 
+	* 	insert('table_name', 
+	*			array('column_name' => 'value')
+	*	);
+*/
 	public function insert($table, $values){
 
 		// Build SQL
@@ -72,7 +87,7 @@ class Database {
 
 		// Set values
 		foreach($values as $value){
-			// Check for int
+			// Check for interger
 			if(is_numeric($value)){
 				$sql .= ",".$value;
 			}
@@ -84,6 +99,9 @@ class Database {
 		// End of sql
 		$sql .= ");";
 
+		// Push sql to debug
+		$this::$sql[] = $sql;
+
 		// Prepare SQL query
 		$query = $this->connect()->prepare($sql);
 
@@ -91,6 +109,55 @@ class Database {
 		$query->execute();
 	}
 
+/*
+	* 	Expected input: 
+	*
+	* 	update('table_name', 
+	*			array('column_name' => 'new_column_value'),
+	*			array('column_name = column_value')
+	*	);
+*/
+	public function update($table, $values, $where){
+
+		// Build SQL
+		$sql  = "UPDATE";
+		$sql .= ' `'.$table.'` ';
+		$sql .= "SET ";
+
+		$last = end($values);
+
+		// Set values
+		foreach($values as $key => $value){
+			// Check for interger
+			if(is_numeric($value)){
+				$sql .= "`".$key."` = ".$value;
+			}
+			else {
+				$sql .= "`".$key."` = '".$value."'";
+			}
+			if($value !== $last) $sql.= ", ";
+		}
+
+		// Build where clause
+		$sql .= " WHERE 1 = 1";
+		foreach($where as $clause){
+			$sql .= " AND ".$clause;
+		}
+
+		// Push sql to debug
+		$this::$sql[] = $sql;
+
+		// Prepare SQL query
+		$query = $this->connect()->prepare($sql);
+
+		// Execute SQL query
+		$query->execute();
+	}
+
+	public function debug(){
+		// Show all sql
+		d($this::$sql);
+	}
 // End methods
 }
 

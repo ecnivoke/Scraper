@@ -103,7 +103,7 @@ class Users {
 		// Create user
 		if(empty($duplicate)){
 			// Encrypt password
-			$password = $this->encryptPassword($input['passwordR']);
+			$password = encryptPassword($input['passwordR']);
 
 			// User array
 			$user 					= array();
@@ -125,20 +125,68 @@ class Users {
 		return $error;
 	}
 
-	private function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){
-		// Hash password 
-		/*
-		PASSWORD_BCRYPT <- current strongest
-		PASSWORD_ARGON2I
-		PASSWORD_ARGON2ID
-		PASSWORD_DEFAULT
-		*/
-		$password = password_hash($pass, $method, $options);
+	public function checkTokenByUser($username){
+		// Build sql
+		$this->sql['check_user_token'] = "
+			SELECT
+				user_token_auth.id
+			FROM 
+				user_token_auth
+			WHERE 1 = 1
+				AND user_token_auth.expired  = 0
+				AND user_token_auth.username = '".$username."'";
+
+		// Get user
+		$results = $this->database->getRows($this->sql['check_user_token']);
 
 		// Output
-		return $password;
+		return $results;
 	}
 
+	public function getTokenByUser($username){
+		// Build sql
+		$this->sql['get_user_token'] = "
+			SELECT
+				user_token_auth.id,
+				user_token_auth.username,
+				user_token_auth.password_hash,
+				user_token_auth.selector_hash,
+				user_token_auth.expired,
+				user_token_auth.expire_date
+			FROM 
+				user_token_auth
+			WHERE 1 = 1
+				AND user_token_auth.expired  = 0
+				AND user_token_auth.username = '".$username."'";
+
+		// Get user
+		$results = $this->database->getRows($this->sql['get_user_token']);
+
+		// Output
+		return $results;
+	}
+
+	public function createUserToken($username, $pass, $sel, $expire){
+		// Token array
+		$token 					= array();
+		$token['username'] 		= $username;
+		$token['password_hash'] = $pass;
+		$token['selector_hash'] = $sel;
+		$token['expired'] 		= 0;
+		$token['expire_date'] 	= $expire;
+		$token['created'] 		= date('Y-m-d H:i:s');
+
+		// Insert token
+		$this->database->insert('user_token_auth', $token);
+	}
+
+	public function expireToken($id){
+		// User array
+		$token 				= array();
+		$token['expired'] 	= 1;
+
+		$this->database->update('user_token_auth', $token, ['id = '.$id]);
+	}
 // End Methods
 }
 

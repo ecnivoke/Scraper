@@ -44,4 +44,17 @@ function d($debug, $highlight = true, $hidden = false){
 	flush();
 }
 
+function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){
+		// Hash password 
+		/*
+		PASSWORD_BCRYPT <- current strongest
+		PASSWORD_ARGON2I
+		PASSWORD_ARGON2ID
+		PASSWORD_DEFAULT
+		*/
+		$password = password_hash($pass, $method, $options);
+
+		// Output
+		return $password;
+	}
  ?>

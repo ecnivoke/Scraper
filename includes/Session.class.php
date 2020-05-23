@@ -48,6 +48,10 @@ class Session {
 		// Output
 		return $output;
 	}
+
+	public function getCookieExpireTime(){
+		return $this->cookie_time;
+	}
 // End Getters
 
 // Setters
@@ -58,12 +62,33 @@ class Session {
 	public function unsetVar($name){
 		unset($_SESSION[$name]);
 	}
+
+	public function setCookie($name, $value){
+		setcookie($name, $value, time() + $this->cookie_time);
+	}
+
+	public function unsetCookie($name){
+		if($name == 'AUTH'){
+			$this->unsetCookie('username');
+			$this->unsetCookie('random_password');
+			$this->unsetCookie('random_selector');
+		}
+		else {
+			setcookie($name, '', time() - $this->cookie_time);
+		}
+	}
 // End Setters
 
 // Methods
 	public function kill(){
-		// Log out cookies
-		$this->logout();
+		// Delete cookies
+		$this->unsetCookie('AUTH');
+		$this->unsetCookie("csrf_token");
+
+		// Sleep script to ensure that the cookies will be remove
+		// Not sure if its normal for cookies to take some time to delete
+		// But without this line the user will log right back
+		sleep(2);
 
 		// Kill session
 		session_unset();
@@ -73,18 +98,9 @@ class Session {
 		// session_regenerate_id(true);
 	}
 
-	public function logout(){
-		// Set cookies
-		setcookie("user_id", 	'', 	time() - $this->cookie_time);
-		setcookie("username", 	'', 	time() - $this->cookie_time);
-		setcookie("email", 		'', 	time() - $this->cookie_time);
-		setcookie("user_group", '', 	time() - $this->cookie_time);
-		setcookie("csrf_token", '', 	time() - $this->cookie_time);
-	}
-
 	public function login($user){
 		// Generate token
-		$token = $this->generateCSRFToken();
+		$token = $this->generateToken(30);
 
 		// Store variable
 		$this->setVar('user_id', 	$user['user_id']);
@@ -93,7 +109,7 @@ class Session {
 		$this->setVar('user_group', $user['user_group']);
 		$this->setVar('csrf_token', $token);
 		// Set cookie
-		setcookie("csrf_token", 	$token, time() + $this->cookie_time);
+		$this->setCookie("csrf_token", 	$token);
 	}
 
 	public function getUser($item = ''){
@@ -130,15 +146,19 @@ class Session {
 	}
 
 	public function rememberUser($user){
-		// Set cookies
-		setcookie("user_id", 	$user['user_id'], 		time() + $this->cookie_time);
-		setcookie("username", 	$user['username'], 		time() + $this->cookie_time);
-		setcookie("email", 		$user['email'], 		time() + $this->cookie_time);
-		setcookie("user_group", $user['user_group'], 	time() + $this->cookie_time);
+		
 	}
 
-	private function generateCSRFToken(){
-		$token = md5(uniqid(rand(30)));
+	public function _rememberUser($user){
+		// Set cookies
+		$this->setCookie("user_id", 	$user['user_id']);
+		$this->setCookie("username", 	$user['username']);
+		$this->setCookie("email", 		$user['email']);
+		$this->setCookie("user_group",  $user['user_group']);
+	}
+
+	public function generateToken($length){
+		$token = md5(uniqid(rand($length, $length)));
 		return $token;
 	}
 // End Methods

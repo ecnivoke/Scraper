@@ -15,6 +15,7 @@ ini_set("error_reporting", DEVELOP ? E_ALL : DEVELOP);
 define('SESSION_TIME', 3600); // 3600 => 1 Hour
 
 // Set server session time
+ini_set('session.cookie_lifetime', SESSION_TIME);
 ini_set('session.gc_maxlifetime', SESSION_TIME);
 
 // Define database configs

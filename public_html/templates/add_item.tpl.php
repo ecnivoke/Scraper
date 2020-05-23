@@ -1,6 +1,11 @@
 {include 'header.tpl.php' title={$title}}
 
+{if !empty($messages.csrf_token)}{$messages.csrf_token}{/if}
+
 <form method="POST" action="?p=add_item" enctype="multipart/form-data">
+
+	<input type="hidden" name="csrf_token" value="{$smarty.session.csrf_token}">
+
 	<div class='row'>
 		<div class='small-10 columns small-centered'>
 			<h1>{$title}</h1>

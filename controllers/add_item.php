@@ -9,7 +9,7 @@ $errors = '';
 
 if(!empty($_POST)){
 	// Create validator and validate input
-	$validator = new Validator($_POST);
+	$validator = new Validator($_POST, $session_handler->getVar('csrf_token'));
 	$validator->validate();
 
 	// Get variable for template

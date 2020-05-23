@@ -75,18 +75,25 @@ class Session {
 
 	public function logout(){
 		// Set cookies
-		setcookie("user_id", 	$user['user_id'], 		time() - $this->cookie_time);
-		setcookie("username", 	$user['username'], 		time() - $this->cookie_time);
-		setcookie("email", 		$user['email'], 		time() - $this->cookie_time);
-		setcookie("user_group", $user['user_group'], 	time() - $this->cookie_time);
+		setcookie("user_id", 	'', 	time() - $this->cookie_time);
+		setcookie("username", 	'', 	time() - $this->cookie_time);
+		setcookie("email", 		'', 	time() - $this->cookie_time);
+		setcookie("user_group", '', 	time() - $this->cookie_time);
+		setcookie("csrf_token", '', 	time() - $this->cookie_time);
 	}
 
 	public function login($user){
+		// Generate token
+		$token = $this->generateCSRFToken();
+
 		// Store variable
 		$this->setVar('user_id', 	$user['user_id']);
 		$this->setVar('username', 	$user['username']);
 		$this->setVar('email', 		$user['email']);
 		$this->setVar('user_group', $user['user_group']);
+		$this->setVar('csrf_token', $token);
+		// Set cookie
+		setcookie("csrf_token", 	$token, time() + $this->cookie_time);
 	}
 
 	public function getUser($item = ''){
@@ -130,6 +137,10 @@ class Session {
 		setcookie("user_group", $user['user_group'], 	time() + $this->cookie_time);
 	}
 
+	private function generateCSRFToken(){
+		$token = md5(uniqid(rand(30)));
+		return $token;
+	}
 // End Methods
 
 }

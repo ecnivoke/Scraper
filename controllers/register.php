@@ -9,7 +9,7 @@ $errors = '';
 
 if(!empty($_POST)){
 	// Create validator and validate input
-	$validator = new Validator($_POST);
+	$validator = new Validator($_POST, $session_handler->getVar('csrf_token'));
 	$validator->validate();
 
 	// Get variable for template
@@ -18,7 +18,7 @@ if(!empty($_POST)){
 	$messages 	= $validator->getMessages();
 	$popups 	= array();
 
-	if($valid === true){
+	if($valid == true){
 		// Create user handler
 		$user_h = new Users($database);
 
@@ -27,7 +27,9 @@ if(!empty($_POST)){
 
 		// If error is empty its ok
 		if(empty($errors) && !isset($input['user_group'])){
+
 			$user = $user_h->getUser($input['usernameR'])[0];
+
 			// Login the user
 			$session_handler->login($user);
 
@@ -35,7 +37,7 @@ if(!empty($_POST)){
 			header('Location: ?p=item_list');
 			exit();
 		}
-		else {
+		elseif(isset($input['user_group'])) {
 			// Set popup message
 			$popups[] = "User '".$input['usernameR']."' is created succesfully!";
 

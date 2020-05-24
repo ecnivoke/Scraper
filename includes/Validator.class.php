@@ -10,7 +10,7 @@ class Validator {
 // End Properties
 
 	public function __construct($input, $csrf_token = ''){
-		
+
 		$this->input 		= $input;
 		$this->csrf_token 	= $csrf_token;
 	}
@@ -34,7 +34,7 @@ class Validator {
 	public function validate(){
 		
 		// Check CSRF token
-		if($this->csrf_token === $this->input['csrf_token']){
+		if($this->csrf_token === $this->input['csrf_token'] || DEVELOP_CSRF === 0){
 			// Loop over the input
 			foreach($this->input as $key => $value){
 				if($key === 'password' && !empty($value)){

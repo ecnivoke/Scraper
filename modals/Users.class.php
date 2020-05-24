@@ -112,6 +112,8 @@ class Users {
 			$user['email'] 			= $input['emailR'];
 			$user['user_group_id'] 	= !empty($input['user_group']) ? $input['user_group'] : 3; // Default: default user
 			$user['status'] 		= 'a'; // Default: active
+			$user['created'] 		= date('Y:m:d H:i:s');
+			$user['updated'] 		= date('Y:m:d H:i:s');
 
 			// Insert user
 			$this->database->insert('users', $user);

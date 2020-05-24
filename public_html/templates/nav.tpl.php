@@ -8,12 +8,13 @@
 				<a href="?p=add_item">Add item</a>
 			</div>
 			<div class='small-3 columns'>
-				<a href="?p=register">Register new user</a>
-			</div>
-			<div class='small-3 columns'>
 				<a href="?p=logout">Logout</a>
 			</div>
-			{if $smarty.session.user_group === 'super_admin' || 'admin'}
+			{if $smarty.session.user_group === 'super_admin' || 
+				$smarty.session.user_group === 'admin'}
+				<div class='small-3 columns'>
+					<a href="?p=register">Register new user</a>
+				</div>
 				<div class='small-3 columns'>
 					<a href="?p=manager">Manage users</a>
 				</div>

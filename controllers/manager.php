@@ -16,13 +16,13 @@ if(empty($user) && empty($action)){
 }
 else {
 	switch($action){ // ALL FUNCTIONS HAVE TO BE MADE
-		case "user_group"
+		case "user_group":
 			$user_h->changeUserGroup($user);
 		break;
-		case "username"
+		case "username":
 			$user_h->changeUsername($user);
 		break;
-		case "email"
+		case "email":
 			$user_h->changeEmail($user);
 		break;
 	}

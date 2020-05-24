@@ -38,8 +38,8 @@ if(!empty($_POST)){
 					// Remember user
 					if(!empty($input['remember'])){
 						// Create random tokens
-						$random_password = $session_handler->generateToken(32);
-						$random_selector = $session_handler->generateToken(32);
+						$random_password = generateToken(32);
+						$random_selector = generateToken(32);
 
 						// Set cookie
 						$session_handler->setCookie("username", 		$user['username']);
@@ -51,7 +51,7 @@ if(!empty($_POST)){
 						$random_selector_hash = encryptPassword($random_selector);
 
 						// Set expire date
-						$expire_date = date("Y-m-d H:i:s", time() + $session_handler->getCookieExpireTime());
+						$expire_date = date("Y-m-d", time() + $session_handler->getCookieExpireTime());
 
 						// Check if user has an active token
 						$user_token = $user_h->checkTokenByUser($user['username']);

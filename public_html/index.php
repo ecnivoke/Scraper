@@ -13,6 +13,9 @@ $logged_in 		 = $session_handler->logged_in();
 // Connect to database
 $database = initDatabase();
 
+// Set CSRF Token
+$session_handler->setCSRFToken();
+
 // User is not logged in yet, but cookies are set.
 if(	!empty($session_handler->getVar('username')) &&
 	!empty($session_handler->getVar('random_password')) &&

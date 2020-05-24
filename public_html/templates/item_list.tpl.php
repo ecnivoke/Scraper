@@ -13,19 +13,18 @@
 						{/if}
 						<h4><a href="{$item.url}" target="_blank">{$item.name}</a></h4>
 						{if !empty($item.image)}
-							<img src="{$item.image}" />
+							<img src="{$item.image}" alt="Product Image" />
 						{else}
-							<img src="{$smarty.const.IMAGE_DIR}image_not_found.jpg" />
+							<img src="{$smarty.const.IMAGE_DIR}image_not_found.jpg" alt="Image not Found" />
 						{/if}
 						<div class="row">
 							<div class='small-3 columns'>
 								Price:
 							</div>
-							<div class='small-9 columns text-center'>
+							<div class='small-9 columns text-right'>
 								{if !empty($item.former_price)}
 									&euro; <s>{$item.former_price}</s> {$item.price}
-								{/if}
-								{if empty($item.former_price)}
+								{else}
 									{$item.price}
 								{/if}
 							</div>

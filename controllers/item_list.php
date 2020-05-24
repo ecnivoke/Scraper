@@ -15,9 +15,9 @@ $item_h = new Items($database);
 // Count items
 $item_count  = $item_h->countItemsByUser($session_handler->getVar('user_id'))[0];
 $item_count  = $item_count[0];
-$pages_count = round($item_count / 3);
+$pages_count = ceil($item_count / $item_h->getLimit());
 
-if($item_count > 0){ // moet > zijn
+if($item_count > 0){
 	// Get items to scrape from database
 	$items = $item_h->getItemsByUser($session_handler->getVar('user_id'), $page);
 

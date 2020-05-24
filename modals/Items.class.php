@@ -11,6 +11,9 @@ class Items {
 		$this->database = $database;
 	}
 // Getters
+	public function getLimit(){
+		return $this->limit;
+	}
 // End Getters
 // Setters
 // End Setters
@@ -88,6 +91,9 @@ class Items {
 		$item['item_url'] 		= $input['urlR'];
 		$item['item_name'] 		= $input['item_nameR'];
 		$item['user_id'] 		= $user['user_id'];
+		$item['status']			= 'a'; // Default: active
+		$item['created'] 		= date('Y:m:d');
+		$item['updated'] 		= date('Y:m:d');
 
 		// Insert item
 		$this->database->insert('scrape_items', $item);

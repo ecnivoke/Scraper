@@ -112,7 +112,7 @@ class Database {
 /*
 	* 	Expected input: 
 	*
-	* 	update('table_name', 
+	* 	update('table_name',
 	*			array('column_name' => 'new_column_value'),
 	*			array('column_name = column_value')
 	*	);

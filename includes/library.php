@@ -45,16 +45,23 @@ function d($debug, $highlight = true, $hidden = false){
 }
 
 function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cost' => 10)){
-		// Hash password 
-		/*
-		PASSWORD_BCRYPT <- current strongest
-		PASSWORD_ARGON2I
-		PASSWORD_ARGON2ID
-		PASSWORD_DEFAULT
-		*/
-		$password = password_hash($pass, $method, $options);
+	// Hash password 
+	/*
+	PASSWORD_BCRYPT <- current strongest
+	PASSWORD_ARGON2I
+	PASSWORD_ARGON2ID
+	PASSWORD_DEFAULT
+	*/
+	$password = password_hash($pass, $method, $options);
 
-		// Output
-		return $password;
-	}
+	// Output
+	return $password;
+}
+
+function generateToken($length){
+	$token = md5(uniqid(rand($length, $length)));
+	return $token;
+}
+
+
  ?>

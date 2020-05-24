@@ -25,7 +25,7 @@ class Session {
 		// Declare variable
 		$output = '';
 
-		if(!empty($_SESSION[$name])){
+		if(!empty($_SESSION[$name]) && $name !== 'csrf_token'){
 			$output = $_SESSION[$name];
 		}
 		elseif(!empty($_COOKIE[$name])){
@@ -99,17 +99,20 @@ class Session {
 	}
 
 	public function login($user){
-		// Generate token
-		$token = $this->generateToken(30);
-
 		// Store variable
 		$this->setVar('user_id', 	$user['user_id']);
 		$this->setVar('username', 	$user['username']);
 		$this->setVar('email', 		$user['email']);
 		$this->setVar('user_group', $user['user_group']);
-		$this->setVar('csrf_token', $token);
-		// Set cookie
-		$this->setCookie("csrf_token", 	$token);
+	}
+
+	public function setCSRFToken(){
+		// Generate token
+		$token = generateToken(30);
+
+		// Store token
+		$this->setVar('csrf_token', 	$token);
+		$this->setCookie('csrf_token', 	$token);
 	}
 
 	public function getUser($item = ''){
@@ -155,11 +158,6 @@ class Session {
 		$this->setCookie("username", 	$user['username']);
 		$this->setCookie("email", 		$user['email']);
 		$this->setCookie("user_group",  $user['user_group']);
-	}
-
-	public function generateToken($length){
-		$token = md5(uniqid(rand($length, $length)));
-		return $token;
 	}
 // End Methods
 

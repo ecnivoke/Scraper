@@ -4,7 +4,8 @@
 define('VERSION', 1);
 
 // Define if a developer is working
-define('DEVELOP', 1);
+define('DEVELOP', 		1);
+define('DEVELOP_CSRF', 	0); // 0 = developer can bypass CSRF
 
 // Set error reporting
 ini_set('display_errors', DEVELOP);

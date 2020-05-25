@@ -54,9 +54,14 @@ else {
 	// Set paths
 	$controller_path 	= '../controllers/'.$controller.'.php';
 	$page_path 			= TEMPLATE_DIR.$controller.'.tpl.php';
+	$script_path 		= SCRIPT_DIR.$controller.'.js';
+
+	$script = file_exists($script_path) ? $script_path : '';
 
 	// Check if logged in
 	if($logged_in){
+		// Include javascript
+		$smarty->assign('script', $script);
 		if(file_exists($controller_path)){
 			// Require page controller
 			require($controller_path);

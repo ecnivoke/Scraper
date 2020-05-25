@@ -9,6 +9,7 @@
 
 	<link rel="stylesheet" type="text/css" href="{$smarty.const.STYLE_DIR}style.css">
 	
+	<script type="text/javascript" src='{$smarty.const.INCLUDE_DIR}jquery-3.5.1.min.js'></script>
 </head>
 <body>
 	<div class='container'>

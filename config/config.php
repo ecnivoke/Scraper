@@ -32,6 +32,7 @@ define('TEMPLATE_DIR', 	'../public_html/templates/');
 define('SCRIPT_DIR', 	'../public_html/scripts/');
 define('STYLE_DIR', 	'../public_html/styles/');
 define('IMAGE_DIR', 	'../public_html/images/');
+define('INCLUDE_DIR', 	'../includes/librarys/');
 
  ?>
 

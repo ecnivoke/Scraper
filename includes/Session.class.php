@@ -4,12 +4,13 @@ class Session {
 
 // Properties
 	private $remember_time;
-	private $cookie_time = 30000000; // About 1 year
+	private $cookie_time; // About 1 year
 // End Properties
 
-	public function __construct($time){
+	public function __construct(){
 
-		$this->remember_time = $time;
+		$this->remember_time = SESSION_TIME;
+		$this->cookie_time   = COOKIE_TIME;
 
 		if(session_id() !== null){
 			// Set client session id timer
@@ -106,6 +107,22 @@ class Session {
 		$this->setVar('user_group', $user['user_group']);
 	}
 
+	public function loginAsUser($user){
+		// Store variable
+		$this->setVar('fake_login',	true);
+		$this->setVar('_user_id', 	$this->getVar('user_id'));
+
+		$this->login($user);
+	}
+
+	public function logoutAsUser($user){
+		// Store variable
+		$this->setVar('fake_login',	true);
+		$this->setVar('_user_id', 	$this->getVar('user_id'));
+
+		$this->login($user);
+	}
+
 	public function setCSRFToken(){
 		// Generate token
 		$token = generateToken(30);
@@ -146,18 +163,6 @@ class Session {
 
 		// Output
 		return $result;
-	}
-
-	public function rememberUser($user){
-		
-	}
-
-	public function _rememberUser($user){
-		// Set cookies
-		$this->setCookie("user_id", 	$user['user_id']);
-		$this->setCookie("username", 	$user['username']);
-		$this->setCookie("email", 		$user['email']);
-		$this->setCookie("user_group",  $user['user_group']);
 	}
 // End Methods
 

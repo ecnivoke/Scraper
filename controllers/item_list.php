@@ -17,7 +17,7 @@ $item_count  = $item_h->countItemsByUser($session_handler->getVar('user_id'))[0]
 $item_count  = $item_count[0];
 $pages_count = ceil($item_count / $item_h->getLimit());
 
-if($item_count > 0){
+if($item_count > 0 && SKIP_SCRAPE === 0){
 	// Get items to scrape from database
 	$items = $item_h->getItemsByUser($session_handler->getVar('user_id'), $page);
 

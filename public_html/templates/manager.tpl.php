@@ -1,7 +1,5 @@
 {include 'header.tpl.php'}
 
-<!-- {$users|d} -->
-
 <div class="row">
 	<div class='small-10 columns small-centered'>
 		{foreach $users as $user}
@@ -23,10 +21,14 @@
 				<div class='small-3 columns'>
 					<a href="?p=manager&u={$user.id}&a=username">username</a>
 				</div>
-				<div class='small-6 columns'>
+				<div class='small-3 columns'>
 					<a href="?p=manager&u={$user.id}&a=email">email</a>
 				</div>
+				<div class='small-3 columns'>
+					<a href="?p=manager&u={$user.id}&a=login">login</a>
+				</div>
 			</div>
+			<br />
 		{/foreach}
 	</div>
 </div>

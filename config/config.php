@@ -5,7 +5,8 @@ define('VERSION', 1);
 
 // Define if a developer is working
 define('DEVELOP', 		1);
-define('DEVELOP_CSRF', 	0); // 0 = developer can bypass CSRF
+define('DEVELOP_CSRF', 	1); // 0 = developer can bypass CSRF
+define('SKIP_SCRAPE', 	0); // 1 = skip scraping items
 
 // Set error reporting
 ini_set('display_errors', DEVELOP);
@@ -13,7 +14,8 @@ ini_set('display_startup_errors', DEVELOP);
 ini_set("error_reporting", DEVELOP ? E_ALL : DEVELOP);
 
 // Define session time
-define('SESSION_TIME', 3600); // 3600 => 1 Hour
+define('SESSION_TIME', 	3600); 		// 3600 => 1 Hour
+define('COOKIE_TIME', 	30000000);	// About 1 year
 
 // Set server session time
 ini_set('session.cookie_lifetime', SESSION_TIME);

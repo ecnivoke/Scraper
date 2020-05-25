@@ -7,7 +7,7 @@ require('../includes/library.php');
 require('../includes/Session.class.php');
 
 // Make session handeler
-$session_handler = new Session(SESSION_TIME);
+$session_handler = new Session();
 $logged_in 		 = $session_handler->logged_in();
 
 // Connect to database

@@ -1,7 +1,7 @@
 {include 'header.tpl.php' title={$title}}
 
 <form method="POST" action="?p=login" enctype="multipart/form-data">
-	<input type="hidden" name="csrf_token" value="">
+	<input type="hidden" name="csrf_token" value="{$smarty.session.csrf_token}">
 	<div class='row'>
 		<div class='small-10 columns small-centered'>
 			<h1>{$title}</h1>

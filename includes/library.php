@@ -59,7 +59,7 @@ function encryptPassword($pass, $method = PASSWORD_BCRYPT, $options = array('cos
 }
 
 function generateToken($length){
-	$token = md5(uniqid(rand($length, $length)));
+	$token = md5(bin2hex(random_bytes($length)));
 	return $token;
 }
 

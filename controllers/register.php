@@ -2,7 +2,7 @@
 
 // Require classes
 require('../includes/Validator.class.php');
-require('../modals/Users.class.php');
+require('../models/Users.class.php');
 
 // Declade variable
 $errors = '';

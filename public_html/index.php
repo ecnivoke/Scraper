@@ -23,7 +23,7 @@ if(	!empty($session_handler->getVar('username')) &&
 	$logged_in == false ){
 
 	// Require User modal
-	require('../modals/Users.class.php');
+	require('../models/Users.class.php');
 
 	// Create a new user handler
 	$user_h = new Users($database);

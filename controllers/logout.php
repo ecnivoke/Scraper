@@ -2,7 +2,7 @@
 
 if(!empty($session_handler->getVar('fake_login'))){
 	// Require classes
-	require('../modals/Users.class.php');
+	require('../models/Users.class.php');
 
 	$user_h = new Users($database);
 

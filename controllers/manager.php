@@ -5,7 +5,7 @@ $user_group = $session_handler->getVar('user_group');
 if( $user_group === 'super_admin' || 
 	$user_group === 'admin'){
 	// Require classes
-	require('../modals/Users.class.php');
+	require('../models/Users.class.php');
 
 	// Declade variables
 	$user_id = !empty($_GET['u']) ? $_GET['u'] : '';

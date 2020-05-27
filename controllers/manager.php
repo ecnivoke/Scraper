@@ -1,9 +1,20 @@
 <?php 
 
+if(!empty($session_handler->getVar('fake_login'))){
+	// Set template variables
+	$smarty->assign('title',	'Forbidden');
+	$smarty->assign('error',	['Can\'t manage users while logged in as someone else.']);
+
+	// Display page
+	$smarty->display('error.tpl.php');
+	exit();
+}
+
 $user_group = $session_handler->getVar('user_group');
 
 if( $user_group === 'super_admin' || 
-	$user_group === 'admin'){
+		$user_group === 'admin'){
+
 	// Require classes
 	require('../models/Users.class.php');
 

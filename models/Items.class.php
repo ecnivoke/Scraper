@@ -63,6 +63,7 @@ class Items {
 				) AS scrape_items
 				WHERE 1 = 1
 					AND ".$page." < row
+					AND scrape_items.user_id = ".$user."
 				ORDER BY 
 					scrape_items.id
 				LIMIT ".$this->limit;

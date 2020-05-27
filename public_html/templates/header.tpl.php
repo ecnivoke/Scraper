@@ -13,5 +13,8 @@
 </head>
 <body>
 	<div class='container'>
+		{if !empty($smarty.session.fake_login)}
+			logged in as {$smarty.session._username}
+		{/if}
 		{include 'nav.tpl.php'}
 		{include 'popup.tpl.php'}

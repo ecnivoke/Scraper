@@ -10,6 +10,9 @@ if(!empty($session_handler->getVar('fake_login'))){
 	$user_id = $session_handler->getVar('_user_id');
 	$user 	 = $user_h->getUserById($user_id)[0];
 
+	// Logout as user
+	$session_handler->logoutAsUser();
+
 	// Login previous user
 	$session_handler->login($user);
 }

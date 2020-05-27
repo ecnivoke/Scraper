@@ -25,7 +25,11 @@
 					<a href="?p=manager&u={$user.id}&a=email">email</a>
 				</div>
 				<div class='small-3 columns'>
-					<a href="?p=manager&u={$user.id}&a=login">login</a>
+					{if $user.id !== $smarty.session.user_id}
+						<a href="?p=manager&u={$user.id}&a=login">login</a>
+					{else}
+						this you
+					{/if}
 				</div>
 			</div>
 			<br />

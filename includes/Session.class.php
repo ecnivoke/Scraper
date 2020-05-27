@@ -111,16 +111,16 @@ class Session {
 		// Store variable
 		$this->setVar('fake_login',	true);
 		$this->setVar('_user_id', 	$this->getVar('user_id'));
+		$this->setVar('_username', 	$this->getVar('username'));
 
 		$this->login($user);
 	}
 
-	public function logoutAsUser($user){
-		// Store variable
-		$this->setVar('fake_login',	true);
-		$this->setVar('_user_id', 	$this->getVar('user_id'));
-
-		$this->login($user);
+	public function logoutAsUser(){
+		// Unset variable
+		$this->unsetVar('fake_login');
+		$this->unsetVar('_user_id');
+		$this->unsetVar('_username');
 	}
 
 	public function setCSRFToken(){

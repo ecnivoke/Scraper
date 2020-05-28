@@ -1,31 +1,37 @@
-<div class='main-nav'>
-	<div class='nav'>
+<div class='row'>
+	<div class='small-10 columns small-centered'>
 		{if isset($smarty.session.user_id)}
-			<a class='nav' href="?p=item_list">List</a>
-			<a class='nav' href="?p=add_item">Add item</a>
-			<a class='nav' href="?p=logout">Logout</a>
-
+			<div class='small-3 columns'>
+				<a href="?p=item_list">List</a>
+			</div>
+			<div class='small-3 columns'>
+				<a href="?p=add_item">Add item</a>
+			</div>
+			<div class='small-3 columns'>
+				<a href="?p=logout">Logout</a>
+			</div>
 			{if $smarty.session.user_group === 'super_admin' || 
 				$smarty.session.user_group === 'admin'}
-
-					<a class='nav' href="?p=register">Register new user</a>
-					<a class='nav' href="?p=manager">Manage users</a>
-
-				{/if}
+				<div class='small-3 columns'>
+					<a href="?p=register">Register new user</a>
+				</div>
+				<div class='small-3 columns'>
+					<a href="?p=manager">Manage users</a>
+				</div>
+			{/if}
 		{else}
-			<div class=''>
+			<div class='small-3 columns'>
 				<a href="?p=login">Login</a>
 			</div>
-			<div class=''>
+			<div class='small-3 columns'>
 				<a href="?p=register">Register</a>
 			</div>
-			<div class=''>
+			<div class='small-3 columns'>
 				<a href="?p="></a>
 			</div>
-			<div class=''>
+			<div class='small-3 columns'>
 				<a href="?p="></a>
 			</div>
 		{/if}
-			</ul>
 	</div>
 </div>

@@ -6,10 +6,122 @@ b.error {
 	color: red;
 }
 
-small.sale {
+*.success {
 	color: #52b329; /* lime / green ish */
 }
 
-*.success {
+/* ------------------------------------------------------------------------------------------------------------------------ */
+
+body {
+	background-image: url(../images/background.jpg);
+}
+
+img {
+	width: 400px;
+}
+
+a.nav {
+	margin-right: 20px;
+}
+
+h1 {
+	font-size: 75px;
+	margin-top: 50px;
+	text-align: center;
+
+    background: -webkit-linear-gradient(#fff, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ds-cap {
+	text-transform: capitalize
+}
+
+.ds-inlineB {
+	display: inline-block;
+}
+
+.ds-noDots {
+	list-style-type: none;
+}
+
+.ds-center {
+	text-align: center;
+}
+
+.nav {
+	margin-top: 50px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+
+    background: -webkit-linear-gradient(#fff, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.main-items {
+	width: 1920px;
+}
+
+.items-container {
+	text-align: center;
+	width: 100%;
+}
+
+.items {
+	width: 400px;
+	padding: 0 50px;
+}
+
+.item-name {
+	text-align: center;
+	margin: 10px 30px;
+	padding: 0px;
+	font-size: 40px;
+}
+
+small.sale {
+	text-align: left;
+	font-size: 25px;
 	color: #52b329; /* lime / green ish */
+	text-decoration: underline;
+}
+
+.item-link {
+	font-size: 50px;
+
+	background: -webkit-linear-gradient(#fff, #9c9c9c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+	text-decoration: none;
+}
+
+.price {
+	font-size: 25px;
+
+	background: -webkit-linear-gradient(#fff, #9c9c9c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pages {
+	width: 1920px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.page {
+	font-size: 35px;
+	margin-top: 40px;
+}
+
+.ds-colorW {
+	color: white;
+	text-decoration-color: white;
+}
+
+.current-page {
+	text-decoration: underline;
 }

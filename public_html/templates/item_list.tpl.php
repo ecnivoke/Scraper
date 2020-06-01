@@ -11,7 +11,7 @@
 						{if !empty($item.former_price)}
 							<small class='sale'><b>SALE!</b></small>
 						{/if}
-						<h4><a href="{$item.url}" target="_blank">{$item.name}</a></h4>
+						<h4><a href="{$item.item_url}" target="_blank">{$item.item_name}</a></h4>
 						{if !empty($item.image)}
 							<img src="{$item.image}" alt="Product Image" />
 						{else}

@@ -3,7 +3,7 @@
 // Define version
 define('VERSION', 1);
 
-// Define if a developer is working
+// Define developer settings
 define('DEVELOP', 		1);
 define('DEVELOP_CSRF', 	1); // 0 = developer can bypass CSRF
 define('SKIP_SCRAPE', 	0); // 1 = skip scraping items
@@ -18,7 +18,7 @@ define('SESSION_TIME', 	3600); 		// 3600 => 1 Hour
 define('COOKIE_TIME', 	30000000);	// About 1 year
 
 // Set server session time
-ini_set('session.cookie_lifetime', SESSION_TIME);
+ini_set('session.cookie_lifetime', COOKIE_TIME);
 ini_set('session.gc_maxlifetime', SESSION_TIME);
 
 // Define database configs

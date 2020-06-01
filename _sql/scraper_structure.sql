@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2020 at 09:25 PM
+-- Generation Time: Jun 01, 2020 at 02:13 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -21,6 +21,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `scraper`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saved_items`
+--
+
+CREATE TABLE `saved_items` (
+  `id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `item_info` text NOT NULL,
+  `expire_date` date NOT NULL,
+  `expired` tinyint(4) NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -87,6 +104,12 @@ CREATE TABLE `user_token_auth` (
 --
 
 --
+-- Indexes for table `saved_items`
+--
+ALTER TABLE `saved_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `scrape_items`
 --
 ALTER TABLE `scrape_items`
@@ -114,6 +137,12 @@ ALTER TABLE `user_token_auth`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `saved_items`
+--
+ALTER TABLE `saved_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `scrape_items`

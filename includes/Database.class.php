@@ -117,7 +117,7 @@ class Database {
 	*			array('column_name = column_value')
 	*	);
 */
-	public function update($table, $values, $where){
+	public function update($table, $values, $where = ''){
 
 		// Build SQL
 		$sql  = "UPDATE";

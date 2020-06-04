@@ -6,7 +6,8 @@ class Items {
 	private $sql = array();
 	private $database;
 	private $limit = 3; // Items per page
-	private $item_refresh = 172800; // 2 days until refresh
+	private $item_refresh = 172800; // 2 days
+	public static $page = 1;
 // End Properties
 	public function __construct($database){
 		$this->database = $database;
@@ -27,8 +28,9 @@ class Items {
 			FROM 
 				scrape_items
 			WHERE 1 = 1
-				AND scrape_items.user_id = ".$user
-		;
+				AND scrape_items.user_id = ".$user."
+				AND scrape_items.status  <> 'd'
+		";
 
 		// Get results
 		$results = $this->database->getRows($this->sql['count_items']);
@@ -61,6 +63,7 @@ class Items {
 				saved_items.user_id,
 				saved_items.item_info,
 				saved_items.expire_date,
+				saved_items.expired,
 				saved_items.created,
 				saved_items.updated
 			FROM 
@@ -79,6 +82,7 @@ class Items {
 					saved_items.user_id,
 					saved_items.item_info,
 					saved_items.expire_date,
+					saved_items.expired,
 					saved_items.created,
 					saved_items.updated
 				FROM 
@@ -87,7 +91,7 @@ class Items {
 				WHERE 1 = 1
 					AND ".$page." < row
 					AND saved_items.user_id = ".$user."
-					AND expired = 0
+					AND saved_items.expired = 0
 				ORDER BY 
 					saved_items.id
 				LIMIT ".$this->limit;
@@ -97,7 +101,7 @@ class Items {
 					saved_items
 				WHERE 1 = 1
 					AND saved_items.user_id = ".$user."
-					AND expired = 0
+					AND saved_items.expired = 0
 				ORDER BY 
 					saved_items.id ASC
 				LIMIT ".$this->limit;
@@ -117,7 +121,9 @@ class Items {
 				scrape_items.id,
 				scrape_items.item_url,
 				scrape_items.item_name,
-				scrape_items.user_id
+				scrape_items.user_id,
+				scrape_items.created,
+				scrape_items.updated
 			FROM ";
 
 		if($page != 1){
@@ -131,13 +137,17 @@ class Items {
 					scrape_items.id,
 					scrape_items.item_url,
 					scrape_items.item_name,
-					scrape_items.user_id
+					scrape_items.user_id,
+					scrape_items.status,
+					scrape_items.created,
+					scrape_items.updated
 				FROM 
 					scrape_items
 				) AS scrape_items
 				WHERE 1 = 1
 					AND ".$page." < row
 					AND scrape_items.user_id = ".$user."
+					AND scrape_items.status  <> 'd'
 				ORDER BY 
 					scrape_items.id
 				LIMIT ".$this->limit;
@@ -148,6 +158,7 @@ class Items {
 					scrape_items
 				WHERE 1 = 1
 					AND scrape_items.user_id = ".$user."
+					AND scrape_items.status  <> 'd'
 				ORDER BY 
 					scrape_items.id ASC
 				LIMIT ".$this->limit;
@@ -175,11 +186,37 @@ class Items {
 				scrape_items
 			WHERE 1 = 1
 				AND scrape_items.id 	 = ".$item."
-				AND scrape_items.user_id = ".$user
-		;
+				AND scrape_items.user_id = ".$user."
+				AND scrape_items.status  <> 'd'
+		";
 
 		// Get items
 		$results = $this->database->getRows($this->sql['get_item_by_user']);
+
+		// Output
+		return $results;
+	}
+
+	public function getItemById($id){
+		// Build sql
+		$this->sql['get_item_by_id'] = "
+			SELECT 
+				scrape_items.id,
+				scrape_items.item_url,
+				scrape_items.item_name,
+				scrape_items.user_id,
+				scrape_items.status,
+				scrape_items.created,
+				scrape_items.updated
+			FROM 
+				scrape_items
+			WHERE 1 = 1
+				AND scrape_items.id 	 = ".$id."
+				AND scrape_items.status  <> 'd'
+		";
+
+		// Get items
+		$results = $this->database->getRows($this->sql['get_item_by_id']);
 
 		// Output
 		return $results;
@@ -192,19 +229,45 @@ class Items {
 		$item['item_name'] 		= $input['item_nameR'];
 		$item['user_id'] 		= $user['user_id'];
 		$item['status']			= 'a'; // Default: active
-		$item['created'] 		= date('Y:m:d');
-		$item['updated'] 		= date('Y:m:d');
+		$item['created'] 		= date('Y-m-d H:i:s');
+		$item['updated'] 		= date('Y-m-d H:i:s');
 
 		// Insert item
 		$this->database->insert('scrape_items', $item);
 	}
 
-	public function expireSavedItem($id){
-		// User array
-		$item 				= array();
-		$item['expired'] 	= 1;
+	public function updateItem($input){
+		// Also expires the saved item
+		$this->expireSavedItem($input['id']);
 
-		$this->database->update('saved_items', $item, ['id = '.$id]);
+		// Item array
+		$item 					= array();
+		$item['item_url'] 		= $input['item_urlR'];
+		$item['item_name'] 		= $input['item_nameR'];
+		$item['updated'] 		= date('Y-m-d H:i:s');
+
+		// Insert item
+		$this->database->update('scrape_items', $item, ['id = '.$input['id']]);
+	}
+
+	public function deleteItem($id){
+		// Also expires the saved item
+		$this->expireSavedItem($id);
+
+		// Item array
+		$item 				= array();
+		$item['status'] 	= 'd';
+
+		$this->database->update('scrape_items', $item, ['id = '.$id]);
+	}
+
+	public function expireSavedItem($id){
+		// Item array
+		$saved_item 			= array();
+		$saved_item['expired'] 	= 1;
+		$saved_item['updated'] 	= date('Y-m-d H:i:s');
+
+		$this->database->update('saved_items', $saved_item, ['item_id = '.$id]);
 	}
 
 // End Methods

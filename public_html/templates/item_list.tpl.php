@@ -3,6 +3,7 @@
 <div class='row'>
 	<div class='small-10 columns small-centered'>
 		<h1>{$title}</h1>
+		<div class='loading'></div>
 		{if !empty($results)}
 			<!-- 3 items 1 row -->
 			<div class="row">
@@ -11,7 +12,7 @@
 						{if !empty($item.former_price)}
 							<small class='sale'><b>SALE!</b></small>
 						{/if}
-						<h4><a href="{$item.item_url}" target="_blank">{$item.item_name}</a></h4>
+						<h4><a href="?p=edit_item&id={$item.item_id}">✏</a> <a href="{$item.item_url}" target="_blank">{$item.item_name}</a></h4>
 						{if !empty($item.image)}
 							<img src="{$item.image}" alt="Product Image" />
 						{else}
@@ -25,7 +26,7 @@
 								{if !empty($item.former_price)}
 									&euro; <s>{$item.former_price}</s> {$item.price}
 								{else}
-									{$item.price}
+									&euro; {$item.price}
 								{/if}
 							</div>
 						</div>

@@ -49,7 +49,6 @@ if(!empty($_POST)){
 	// Assign template variables
 	$smarty->assign('input', 	$input);
 	$smarty->assign('messages', $messages);
-	$smarty->assign('messages', $messages);
 	$smarty->assign('errors', 	$errors);
 	$smarty->assign('popups', 	$popups);
 }

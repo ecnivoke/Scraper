@@ -20,7 +20,8 @@ $pages_count = ceil($item_count / $item_h->getLimit());
 
 if($item_count > 0 && SKIP_SCRAPE === 0){
 	// Get saved items from previous load
-	$saved_items = $item_h->getSavedItems($user_id, $page);
+//	$saved_items = $item_h->getSavedItems($user_id, $page);
+	$saved_items = array();
 
 	if(empty($saved_items)){
 		// Get items to scrape from database
@@ -43,7 +44,7 @@ if($item_count > 0 && SKIP_SCRAPE === 0){
 			$results[$i]['item_id'] 	= $items[$i]['id'];
 
 			// Save item to user for faster loading
-			$item_h->saveItemByUser($results[$i], $user_id);
+//			$item_h->saveItemByUser($results[$i], $user_id);
 		}
 
 	}
@@ -56,7 +57,7 @@ if($item_count > 0 && SKIP_SCRAPE === 0){
 				$results[] 	= json_decode($stripped, true);
 			}
 			else {
-				$item_h->expireSavedItem($item['id']);
+				$item_h->expireSavedItem($item['item_id']);
 
 				$item = $item_h->getItemByUser($item['item_id'], $item['user_id'])[0];
 

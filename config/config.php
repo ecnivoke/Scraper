@@ -6,7 +6,7 @@ define('VERSION', 1);
 // Define developer settings
 define('DEVELOP', 		1);
 define('DEVELOP_CSRF', 	1); // 0 = developer can bypass CSRF
-define('SKIP_SCRAPE', 	0); // 1 = skip scraping items
+define('SKIP_SCRAPE', 	1); // 1 = skip scraping items
 
 // Set error reporting
 ini_set('display_errors', DEVELOP);

@@ -34,7 +34,7 @@ if(!empty($_POST)){
 			$session_handler->login($user);
 
 			// Redirect
-			header('Location: ?p=item_list');
+			header('Location: ?p=index');
 			exit();
 		}
 		elseif(isset($input['user_group'])) {

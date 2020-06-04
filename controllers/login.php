@@ -70,7 +70,7 @@ if(!empty($_POST)){
 					}
 
 					// Redirect
-					header('Location: ?p=item_list');
+					header('Location: ?p=index');
 					exit();
 				}
 				else {

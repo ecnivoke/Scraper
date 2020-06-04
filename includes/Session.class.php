@@ -105,6 +105,7 @@ class Session {
 		$this->setVar('username', 	$user['username']);
 		$this->setVar('email', 		$user['email']);
 		$this->setVar('user_group', $user['user_group']);
+		$this->setVar('item_page', 	1);
 	}
 
 	public function loginAsUser($user){

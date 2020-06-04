@@ -7,7 +7,6 @@ class Items {
 	private $database;
 	private $limit = 3; // Items per page
 	private $item_refresh = 172800; // 2 days
-	public static $page = 1;
 // End Properties
 	public function __construct($database){
 		$this->database = $database;

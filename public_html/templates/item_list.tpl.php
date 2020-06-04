@@ -43,7 +43,7 @@
 	<div class='small-12 columns text-center'>
 		{for $i = 1 to $count}
 			{if $i != $page}
-				<a href="?p=item_list&c={$i}">{$i}</a>
+				<a href="?p=item_list#{$i}">{$i}</a>
 			{else}
 				{$i}
 			{/if}

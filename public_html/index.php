@@ -52,7 +52,7 @@ if($controller === ''){
 }
 else {
 	// Set paths
-	$controller_path 	= '../controllers/'.$controller.'.php';
+	$controller_path 	= CONTROLLER_DIR.$controller.'.php';
 	$page_path 			= TEMPLATE_DIR.$controller.'.tpl.php';
 	$script_path 		= SCRIPT_DIR.$controller.'.js';
 

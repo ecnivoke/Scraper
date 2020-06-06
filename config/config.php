@@ -30,11 +30,14 @@ define('DATABASE_PREFIX', 	'');
 
 // Define directories
 define('SMARTY_DIR', 	'../includes/Smarty/libs/');
+define('INCLUDE_DIR', 	'../includes/librarys/');
+
 define('TEMPLATE_DIR', 	'../public_html/templates/');
 define('SCRIPT_DIR', 	'../public_html/scripts/');
 define('STYLE_DIR', 	'../public_html/styles/');
 define('IMAGE_DIR', 	'../public_html/images/');
-define('INCLUDE_DIR', 	'../includes/librarys/');
+
+define('CONTROLLER_DIR','../controllers/');
 
  ?>
 

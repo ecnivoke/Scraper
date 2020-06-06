@@ -8,6 +8,7 @@ b.error {
 
 small.sale {
 	color: #52b329; /* lime / green ish */
+	font-weight: bold;
 }
 
 *.success {

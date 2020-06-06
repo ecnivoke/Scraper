@@ -1,6 +1,6 @@
 
+let debug = [];
 
-
-$(document).ready(
-
-);
+$(document).ready( function(){
+	debug.push('Ready - app.js');
+});

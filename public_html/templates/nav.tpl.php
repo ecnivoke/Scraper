@@ -2,7 +2,7 @@
 	<div class='small-10 columns small-centered'>
 		{if isset($smarty.session.user_id)}
 			<div class='small-3 columns'>
-				<a href="?p=item_list#{$smarty.session.item_page}">List</a>
+				<a href="?p=item_list&c={$smarty.session.item_page}">List</a>
 			</div>
 			<div class='small-3 columns'>
 				<a href="?p=add_item">Add item</a>

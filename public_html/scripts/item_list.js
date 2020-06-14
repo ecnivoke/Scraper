@@ -1,6 +1,6 @@
 
 function showItemContent(item, index){
-	
+
 	// Create all html
 	$('div[data-container="items"]').append([
 		$('<div />', {'class': 'small-4 columns end'}).append([
@@ -22,6 +22,16 @@ function showItemContent(item, index){
 	]);
 }
 
+function showItemError(error){
+
+	// Create all html
+	$('div[data-container="items"]').append([
+		$('<div />', {'class': 'small-4 columns end'}).append([
+			$('<h4 />').append(document.createTextNode(error.error[1])),
+		])
+	]);
+}
+
 function getItems(){
 	debug.push('function - getItems');
 
@@ -39,7 +49,7 @@ function getItems(){
 		},
 		beforeSend: function(){
 			// Show loading
-			$('.loading').append('loading...');
+			$('.loading').append('Loading...');
 		},
 		complete: function(){
 			// Hide loading
@@ -48,12 +58,18 @@ function getItems(){
 		success: function(result){
 			result = JSON.parse(result);
 
-			// app.js function
-			result.forEach(showItemContent);
-
+			if(Object.keys(result)[0] !== 'error'){
+				// app.js function
+				result.forEach(showItemContent);
+			}
+			else {
+				showItemError(result);
+			}
 		},
 		error: function(xhr){
 			console.log('error: '+ xhr.responseText);
+			// Show error
+			$('.loading').append('Error...');
 		}
 	});
 }

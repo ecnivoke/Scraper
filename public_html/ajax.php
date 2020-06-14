@@ -57,34 +57,45 @@ switch($action){
 		// Create new item handler
 		$item_h  = new Items($database);
 
-		$page 	 = $_GET['page'];
-		$user_id = $session_handler->getVar('user_id');
+		// Define variable
+		$page 	  = $_GET['page'];
+		$user_id  = $session_handler->getVar('user_id');
 
 		// Count items
-		$item_count  = $item_h->countItemsByUser($user_id)[0];
-		$item_count  = $item_count[0];
+		$item_count  = $item_h->countItemsByUser($user_id)[0][0];
 		$pages_count = ceil($item_count / $item_h->getLimit());
 
-		// Get items to scrape from database
-		$items = $item_h->getItemsByUser($user_id, $page);
+		if($item_count > 0){
+			// Get items to scrape from database
+			$items = $item_h->getItemsByUser($user_id, $page);
 
-		// Create a object per item
-		foreach($items as $item){
-			$scrapers[] = new Scraper($item['item_url']);
+			// Create a object per item
+			foreach($items as $item){
+				$scrapers[] = new Scraper($item['item_url']);
+			}
+
+			// Scrape the item from the site
+			foreach($scrapers as $scraper) {
+				$results[] = $scraper->scrape();
+			}
+
+			// Add item name, url to results
+			for($i = 0; $i < count($results); $i++){
+				$results[$i]['item_name'] 	= $items[$i]['item_name'];
+				$results[$i]['item_url'] 	= $items[$i]['item_url'];
+				$results[$i]['item_id'] 	= $items[$i]['id'];
+			}
+
+			$results['error'] = array();
+			$results['error'][] = false;
+		}
+		else {
+			// No items found error
+			$results['error'] = array();
+			$results['error'][] = true;
+			$results['error'][] = 'No Items Found';
 		}
 
-		// Scrape the item from the site
-		foreach($scrapers as $scraper) {
-			$results[] = $scraper->scrape();
-		}
-
-		// Add item name, url to results
-		for($i = 0; $i < count($results); $i++){
-			$results[$i]['item_name'] 	= $items[$i]['item_name'];
-			$results[$i]['item_url'] 	= $items[$i]['item_url'];
-			$results[$i]['item_id'] 	= $items[$i]['id'];
-		}
-		
 	break;
 }
 

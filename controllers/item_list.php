@@ -14,8 +14,7 @@ $user_id 	= $session_handler->getVar('user_id');
 $item_h = new Items($database);
 
 // Count items
-$item_count  = $item_h->countItemsByUser($user_id)[0];
-$item_count  = $item_count[0];
+$item_count  = $item_h->countItemsByUser($user_id)[0][0];
 $pages_count = ceil($item_count / $item_h->getLimit());
 
 if($item_count > 0 && SKIP_SCRAPE === 0){
@@ -48,35 +47,35 @@ if($item_count > 0 && SKIP_SCRAPE === 0){
 		}
 
 	}
-	else {
-		foreach($saved_items as $item){
+	// else {
+	// 	foreach($saved_items as $item){
 
-			if(strtotime($item['expire_date']) > time()){
-				// Strip json and decode
-				$stripped 	= str_replace("\n", '', $item['item_info']);
-				$results[] 	= json_decode($stripped, true);
-			}
-			else {
-				$item_h->expireSavedItem($item['item_id']);
+	// 		if(strtotime($item['expire_date']) > time()){
+	// 			// Strip json and decode
+	// 			$stripped 	= str_replace("\n", '', $item['item_info']);
+	// 			$results[] 	= json_decode($stripped, true);
+	// 		}
+	// 		else {
+	// 			$item_h->expireSavedItem($item['item_id']);
 
-				$item = $item_h->getItemByUser($item['item_id'], $item['user_id'])[0];
+	// 			$item = $item_h->getItemByUser($item['item_id'], $item['user_id'])[0];
 
-				// Create scraper and scrape item
-				$scraper = new Scraper($item['item_url']);
-				$results[] = $scraper->scrape();
+	// 			// Create scraper and scrape item
+	// 			$scraper = new Scraper($item['item_url']);
+	// 			$results[] = $scraper->scrape();
 
-				// Add item name, url to results
-				for($i = 0; $i < count($results); $i++){
-					$results[$i]['item_name'] 	= $item['item_name'];
-					$results[$i]['item_url'] 	= $item['item_url'];
-					$results[$i]['item_id'] 	= $item['id'];
+	// 			// Add item name, url to results
+	// 			for($i = 0; $i < count($results); $i++){
+	// 				$results[$i]['item_name'] 	= $item['item_name'];
+	// 				$results[$i]['item_url'] 	= $item['item_url'];
+	// 				$results[$i]['item_id'] 	= $item['id'];
 
-					// Save item to user for faster loading
-					$item_h->saveItemByUser($results[$i], $user_id);
-				}
-			}
-		}
-	}
+	// 				// Save item to user for faster loading
+	// 				$item_h->saveItemByUser($results[$i], $user_id);
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 // Set page variables

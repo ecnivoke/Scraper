@@ -165,6 +165,10 @@ class Session {
 		// Output
 		return $result;
 	}
+
+	public static function test(){
+		return 'wtf';
+	}
 // End Methods
 
 }

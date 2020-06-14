@@ -1,19 +1,19 @@
 <?php 
 
-if(!empty($session_handler->getVar('fake_login'))){
-	// Set template variables
-	$smarty->assign('title',	'Forbidden');
-	$smarty->assign('error',	['Can\'t manage users while logged in as someone else.']);
+// if(!empty($session_handler->getVar('fake_login'))){
+// 	// Set template variables
+// 	$smarty->assign('title',	'Forbidden');
+// 	$smarty->assign('error',	['Can\'t manage users while logged in as someone else.']);
 
-	// Display page
-	$smarty->display('error.tpl.php');
-	exit();
-}
+// 	// Display page
+// 	$smarty->display('error.tpl.php');
+// 	exit();
+// }
 
 $user_group = $session_handler->getVar('user_group');
 
-if( $user_group === 'super_admin' || 
-		$user_group === 'admin'){
+// if( $user_group === 'super_admin' || 
+// 		$user_group === 'admin'){
 
 	// Require classes
 	require('../models/Users.class.php');
@@ -59,15 +59,15 @@ if( $user_group === 'super_admin' ||
 
 	// Display page
 	$smarty->display('manager.tpl.php');
-}
-else {
-	// Set template variables
-	$smarty->assign('title',	'Forbidden');
-	$smarty->assign('error',	['403 Forbidden']);
+// }
+// else {
+// 	// Set template variables
+// 	$smarty->assign('title',	'Forbidden');
+// 	$smarty->assign('error',	['403 Forbidden']);
 
-	// Display page
-	$smarty->display('error.tpl.php');
-}
+// 	// Display page
+// 	$smarty->display('error.tpl.php');
+// }
 
 
  ?>

@@ -2,13 +2,17 @@
 
 // Require files
 require('../config/config.php');
-require_once('../config/init_smarty.php');
+require('../config/init_smarty.php');
 require('../includes/library.php');
 require('../includes/Session.class.php');
+require('../includes/Middleware.class.php');
 
-// Make session handeler
+// Make session handler
 $session_handler = new Session();
 $logged_in 		 = $session_handler->logged_in();
+
+// Make middleware handler
+$middleware 	 = new Middleware();
 
 // Connect to database
 $database = initDatabase();
@@ -58,27 +62,41 @@ else {
 
 	$script = file_exists($script_path) ? $script_path : '';
 
+	// Check if the user has permission to enter the given url
+	$permission = $middleware->checkPermission($controller);
+
 	// Check if logged in
 	if($logged_in){
-		// Include javascript
-		$smarty->assign('script', $script);
-		if(file_exists($controller_path)){
-			// Require page controller
-			require($controller_path);
-		}
-		elseif(file_exists($page_path)){
+		if($permission){
+			// Include javascript
+			$smarty->assign('script', $script);
+			if(file_exists($controller_path)){
+				// Require page controller
+				require($controller_path);
+			}
+			elseif(file_exists($page_path)){
 
-			// Show page without controller
-			$smarty->assign('title', $controller);
-			$smarty->display($page_path);
+				// Show page without controller
+				$smarty->assign('title', $controller);
+				$smarty->display($page_path);
+			}
+			else {
+				$smarty->assign('title', 'Page Not Found');
+				$smarty->assign('error', DEVELOP?[$controller_path, $page_path, 'Not Found']:['404 Page not found']);
+
+				// Show error page
+				$smarty->display(TEMPLATE_DIR.'error.tpl.php');
+			}
 		}
 		else {
-			$smarty->assign('title', 'Page Not Found');
-			$smarty->assign('error', DEVELOP?[$controller_path, $page_path, 'Not Found']:['404 Page not found']);
+			// Set template variables
+			$smarty->assign('title',	'Page Not Found');
+			$smarty->assign('error',	['404 Page Not Found']);
 
-			// Show error page
-			$smarty->display(TEMPLATE_DIR.'error.tpl.php');
+			// Display page
+			$smarty->display('error.tpl.php');
 		}
+		
 	}
 	elseif($controller === 'login' || $controller === 'register') {
 		// Redirect to login / register

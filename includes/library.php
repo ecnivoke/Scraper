@@ -1,6 +1,6 @@
 <?php 
-
-require_once('../includes/Database.class.php');
+require('../includes/ORM.class.php');
+require('../includes/Database.class.php');
 
 function initDatabase(){
 	// Assemble 

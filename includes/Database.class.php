@@ -1,6 +1,6 @@
 <?php 
 
-class Database {
+class Database extends ORM {
 
 // Properties
 	private $connection;
@@ -24,6 +24,9 @@ class Database {
 		$this->connection 		= $this->connect();	
 	}
 // Getters
+	public function getPrefix(){
+		return $this->prefix;
+	}
 // End Getters
 // Setters
 // End Setters
@@ -80,33 +83,44 @@ class Database {
 */
 	public function insert($table, $values){
 
-		// Build SQL
-		$sql = "INSERT INTO ";
-		$sql .= '`'.$table.'`';
-		$sql .= " VALUES(NULL";
+		// See if table exists
+		$table_exists = $this->checkTable($table);
+		if($table_exists){
 
-		// Set values
-		foreach($values as $value){
-			// Check for interger
-			if(is_numeric($value)){
-				$sql .= ",".$value;
+			// Build SQL
+			$sql = "INSERT INTO ";
+			$sql .= '`'.$table.'`(`id`';
+			foreach($values as $key => $value){
+				$sql .= ',`'.$key.'`';
 			}
-			else {
-				$sql .= ",'".$value."'";
+			$sql .= ") VALUES(NULL";
+
+			// Set values
+			foreach($values as $value){
+				// Check for interger
+				if(is_numeric($value)){
+					$sql .= ",".$value;
+				}
+				else {
+					$sql .= ",'".$value."'";
+				}
 			}
+
+			// End of sql
+			$sql .= ");";
+
+			// Push sql to debug
+			$this::$sql[] = $sql;
+
+			// Prepare SQL query
+			$query = $this->connect()->prepare($sql);
+
+			// Execute SQL query
+			$query->execute();
 		}
-
-		// End of sql
-		$sql .= ");";
-
-		// Push sql to debug
-		$this::$sql[] = $sql;
-
-		// Prepare SQL query
-		$query = $this->connect()->prepare($sql);
-
-		// Execute SQL query
-		$query->execute();
+		else {
+			$this->buildTable($table, $values);
+		}	
 	}
 
 /*
@@ -157,6 +171,26 @@ class Database {
 	public function debug(){
 		// Show all sql
 		d($this::$sql);
+	}
+
+	protected function executeBuild($sql, $alter){
+		// Push sql to debug
+		$this::$sql[] = $sql;
+
+		// Prepare SQL query
+		$query = $this->connect()->prepare($sql);
+
+		// Execute SQL query
+		$query->execute();
+
+		// Push sql to debug
+		$this::$sql[] = $alter;
+
+		// Prepare SQL query
+		$query = $this->connect()->prepare($alter);
+
+		// Execute SQL query
+		$query->execute();
 	}
 // End methods
 }

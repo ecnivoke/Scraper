@@ -85,9 +85,6 @@ switch($action){
 				$results[$i]['item_url'] 	= $items[$i]['item_url'];
 				$results[$i]['item_id'] 	= $items[$i]['id'];
 			}
-
-			$results['error'] = array();
-			$results['error'][] = false;
 		}
 		else {
 			// No items found error

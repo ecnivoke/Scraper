@@ -1,5 +1,7 @@
 
 function showItemContent(item, index){
+	// Prevent errors
+	item = item[1];
 
 	// Create all html
 	$('div[data-container="items"]').append([
@@ -9,7 +11,7 @@ function showItemContent(item, index){
 				$('<a />', {'href': '?p=edit_item&id='+item.item_id}).append(document.createTextNode('✏')),
 				$('<a />', {'href': item.item_url, 'target': '_blank'}).append(document.createTextNode(item.item_name))
 			]),
-			$('<img />', {'src': item.image ? item.image : '../images/image_not_found.jpg', 'alt': 'Product Image'}),
+			$('<img />', {'src': item.image ? item.image : 'images/image_not_found.jpg', 'alt': 'Product Image'}),
 			$('<div />', {'class': 'row'}).append([
 				$('<div />', {'class': 'small-3 columns'}).append(document.createTextNode('Price:')),
 				$('<div />', {'class': 'small-9 columns text-right'}).append([
@@ -59,8 +61,8 @@ function getItems(){
 			result = JSON.parse(result);
 
 			if(Object.keys(result)[0] !== 'error'){
-				// app.js function
-				result.forEach(showItemContent);
+				// Build html for display
+				Object.entries(result).forEach(showItemContent);
 			}
 			else {
 				showItemError(result);

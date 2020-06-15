@@ -91,7 +91,7 @@ else {
 		else {
 			// Set template variables
 			$smarty->assign('title',	'Page Not Found');
-			$smarty->assign('error',	['404 Page Not Found']);
+			$smarty->assign('error',	DEVELOP?[$controller, 'No permission for '.$session_handler->getVar('user_group')]:['404 Page not found']);
 
 			// Display page
 			$smarty->display('error.tpl.php');

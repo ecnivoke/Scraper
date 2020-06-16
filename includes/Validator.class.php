@@ -65,6 +65,19 @@ class Validator {
 		}
 	}
 
+	public function isValidURL($input){
+		$url = $this->input[$input];
+
+		// Validate
+		$valid = filter_var($url, FILTER_VALIDATE_URL);
+
+		// Set error message
+		if($valid === false) $this->messages[$input] = 'Not a valid URL';
+
+		// Output
+		return $valid;
+	}
+
 	public function cleanInput($input) {
 		$input = trim($input);
 		$input = stripslashes($input);

@@ -23,6 +23,8 @@ class Middleware extends Session {
 	public function checkPermission($file){
 
 		switch($file){
+			case 'index':
+			break;
 			case 'login':
 			break;
 			case 'register':
@@ -37,7 +39,9 @@ class Middleware extends Session {
 				}
 			break;
 			default:
-				$this->setPermission(true);
+				if($this->logged_in() === false){
+					$this->setPermission(false);
+				}
 		}
 
 		// Output

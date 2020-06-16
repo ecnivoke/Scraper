@@ -65,46 +65,44 @@ else {
 	// Check if the user has permission to enter the given url
 	$permission = $middleware->checkPermission($controller);
 
-	// Check if logged in
-	if($logged_in){
-		if($permission){
-			// Include javascript
-			$smarty->assign('script', $script);
-			if(file_exists($controller_path)){
-				// Require page controller
-				require($controller_path);
-			}
-			elseif(file_exists($page_path)){
+	// Check if user can go to the url
+	if($permission){
+		// Include javascript
+		$smarty->assign('script', $script);
+		if(file_exists($controller_path)){
+			// Require page controller
+			require($controller_path);
+		}
+		elseif(file_exists($page_path)){
 
-				// Show page without controller
-				$smarty->assign('title', $controller);
-				$smarty->display($page_path);
-			}
-			else {
-				$smarty->assign('title', 'Page Not Found');
-				$smarty->assign('error', DEVELOP?[$controller_path, $page_path, 'Not Found']:['404 Page not found']);
-
-				// Show error page
-				$smarty->display(TEMPLATE_DIR.'error.tpl.php');
-			}
+			// Show page without controller
+			$smarty->assign('title', $controller);
+			$smarty->display($page_path);
 		}
 		else {
+			$smarty->assign('title', 'Page Not Found');
+			$smarty->assign('error', DEVELOP?[$controller_path, $page_path, 'Not Found']:['404 Page not found']);
+
+			// Show error page
+			$smarty->display(TEMPLATE_DIR.'error.tpl.php');
+		}
+	}
+	else {
+		if(DEVELOP){
+			// Get user group for error display
+			$usr_grp = !empty($session_handler->getVar('user_group')) ? $session_handler->getVar('user_group') : 'Not Logged In';
+
 			// Set template variables
 			$smarty->assign('title',	'Page Not Found');
-			$smarty->assign('error',	DEVELOP?[$controller, 'No permission for '.$session_handler->getVar('user_group')]:['404 Page not found']);
+			$smarty->assign('error',	['Requested controller: '.$controller, 'No permission for "'.$usr_grp.'"']);
 
 			// Display page
 			$smarty->display('error.tpl.php');
 		}
-		
-	}
-	elseif($controller === 'login' || $controller === 'register') {
-		// Redirect to login / register
-		require($controller_path);
-	}
-	else {
-		// Redirect to index
-		header('Location: index.php');
+		else {
+			// Redirect to index
+			header('Location: index.php');
+		}
 	}
 }
 

@@ -10,7 +10,6 @@ class ORM {
 // Getters
 // End Getters
 // Setters
-
 // End Setters
 // Methods
 	protected function checkTable($table){

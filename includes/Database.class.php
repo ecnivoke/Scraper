@@ -168,11 +168,6 @@ class Database extends ORM {
 		$query->execute();
 	}
 
-	public function debug(){
-		// Show all sql
-		d($this::$sql);
-	}
-
 	protected function executeBuild($sql, $alter){
 		// Push sql to debug
 		$this::$sql[] = $sql;
@@ -191,6 +186,11 @@ class Database extends ORM {
 
 		// Execute SQL query
 		$query->execute();
+	}
+
+	public function debug(){
+		// Show all sql
+		d($this::$sql);
 	}
 // End methods
 }

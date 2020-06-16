@@ -86,9 +86,9 @@ class Session {
 		$this->unsetCookie('AUTH');
 		$this->unsetCookie("csrf_token");
 
-		// Sleep script to ensure that the cookies will be remove
+		// Sleep script to ensure that the cookies will be removed
 		// Not sure if its normal for cookies to take some time to delete
-		// But without this line the user will log right back
+		// But without this line the user will log right back in
 		sleep(2);
 
 		// Kill session
@@ -96,7 +96,6 @@ class Session {
 		session_destroy();
 		session_write_close();
 		setcookie(session_name(),'',0,'/');
-		// session_regenerate_id(true);
 	}
 
 	public function login($user){
@@ -164,10 +163,6 @@ class Session {
 
 		// Output
 		return $result;
-	}
-
-	public static function test(){
-		return 'wtf';
 	}
 // End Methods
 

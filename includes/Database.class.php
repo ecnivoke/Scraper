@@ -112,13 +112,32 @@ class Database extends ORM {
 			// Push sql to debug
 			$this::$sql[] = $sql;
 
-			// Prepare SQL query
-			$query = $this->connect()->prepare($sql);
+			try {
+				// Prepare SQL query
+				$query = $this->connect()->prepare($sql);
 
-			// Execute SQL query
-			$query->execute();
+				// Execute SQL query
+				$query->execute();
+			}
+			// Missing table
+			catch(Exception $e){
+				// Get Exception message
+				$msg = $e->getMessage();
+				
+				if(CREATE_COLUMNS){
+					// Explode string to get column name
+					$col = explode('Unknown column \'', $msg);
+					$col = explode('\'', $col[1])[0];
+
+					// Build column
+					$this->buildColumn($table, $col, $values);
+				}
+				elseif(DEVELOP){
+					d($msg.' <- IGNORED');
+				}
+			}
 		}
-		else {
+		elseif(CREATE_TABLES) {
 			$this->buildTable($table, $values);
 		}	
 	}
@@ -168,7 +187,7 @@ class Database extends ORM {
 		$query->execute();
 	}
 
-	protected function executeBuild($sql, $alter){
+	protected function executeBuild($sql, $alter = ''){
 		// Push sql to debug
 		$this::$sql[] = $sql;
 
@@ -178,14 +197,17 @@ class Database extends ORM {
 		// Execute SQL query
 		$query->execute();
 
-		// Push sql to debug
-		$this::$sql[] = $alter;
+		if(!empty($alter)){
+			// Push sql to debug
+			$this::$sql[] = $alter;
 
-		// Prepare SQL query
-		$query = $this->connect()->prepare($alter);
+			// Prepare SQL query
+			$query = $this->connect()->prepare($alter);
 
-		// Execute SQL query
-		$query->execute();
+			// Execute SQL query
+			$query->execute();
+		}
+		
 	}
 
 	public function debug(){

@@ -67,7 +67,34 @@ class ORM {
 
 		// Insert record
 		$this->insert($table, $values);
-		
+	}
+
+	protected function buildColumn($table, $column, $values){
+		// Build sql
+		$sql = '
+			ALTER TABLE 
+				`'.$table.'`
+			ADD
+				`'.$column.'` ';
+
+		// Create int column
+		if(is_numeric($values[$column])){
+			$sql .= 'int(11) NOT NULL;';
+		}
+		// Create varchar column
+		elseif(strlen($values[$column]) <= 255){
+			$sql .= 'varchar(255) NOT NULL;';
+		}
+		// Create text column
+		else {
+			$sql .= 'text NOT NULL;';
+		}
+
+		// Create Table and columns
+		$this->executeBuild($sql);
+
+		// Insert record
+		$this->insert($table, $values);
 	}
 // End methods
 }

@@ -8,6 +8,10 @@ define('DEVELOP', 		1);
 define('DEVELOP_CSRF', 	1); // 0 = developer can bypass CSRF
 define('SKIP_SCRAPE', 	1); // 1 = skip scraping items
 
+// ORM settings
+define('CREATE_TABLES',  0);
+define('CREATE_COLUMNS', 0);
+
 // Set error reporting
 ini_set('display_errors', DEVELOP);
 ini_set('display_startup_errors', DEVELOP);

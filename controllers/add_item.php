@@ -15,10 +15,11 @@ if(!empty($_POST)){
 	// Get variable for template
 	$input 		= $validator->getInput();
 	$valid 		= $validator->getValid();
+	$valid_url 	= $validator->isValidURL('urlR');
 	$messages 	= $validator->getMessages();
 	$popups 	= array();
 
-	if($valid){
+	if($valid && $valid_url){
 		// Create item handler
 		$item_h = new Items($database);
 

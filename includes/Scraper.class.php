@@ -89,8 +89,14 @@ class Scraper {
 		$dom->loadHTML($html);
 
 		// Call site function
-		$results = $this->{$this->site}($dom);
 
+		if(method_exists($this, $this->site)){
+			$results = $this->{$this->site}($dom);
+		}
+		else {
+			$results = array();
+		}
+	
 		// Close curl
 		$this->closeCurl();
 

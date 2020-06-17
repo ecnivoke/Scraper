@@ -81,6 +81,9 @@ switch($action){
 
 			// Add item name, url to results
 			for($i = 0; $i < count($results); $i++){
+				if(empty($results[$i])){
+					$results[$i]['error'] = 'Not supported yet';
+				}
 				$results[$i]['item_name'] 	= $items[$i]['item_name'];
 				$results[$i]['item_url'] 	= $items[$i]['item_url'];
 				$results[$i]['item_id'] 	= $items[$i]['id'];

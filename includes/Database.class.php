@@ -124,16 +124,18 @@ class Database extends ORM {
 				// Get Exception message
 				$msg = $e->getMessage();
 				
-				if(CREATE_COLUMNS){
-					// Explode string to get column name
-					$col = explode('Unknown column \'', $msg);
-					$col = explode('\'', $col[1])[0];
+				// Explode string to get column name
+				$col = explode('Unknown column \'', $msg);
+				$col = explode('\'', $col[1])[0];
 
+				if(CREATE_COLUMNS){
 					// Build column
 					$this->buildColumn($table, $col, $values);
 				}
-				elseif(DEVELOP){
-					d($msg.' <- IGNORED');
+				else {
+					throw new Exception(DEVELOP ? 
+						'Database error => Missing column: '.$col.', CREATE_COLUMNS = '.CREATE_COLUMNS.', SQL: "'.$sql.'"'
+						: 'Database error');
 				}
 			}
 		}

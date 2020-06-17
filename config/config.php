@@ -13,7 +13,7 @@ define('CREATE_TABLES',  0);
 define('CREATE_COLUMNS', 0);
 
 // Set error reporting
-ini_set('display_errors', DEVELOP);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', DEVELOP);
 ini_set("error_reporting", DEVELOP ? E_ALL : DEVELOP);
 

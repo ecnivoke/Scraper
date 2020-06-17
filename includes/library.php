@@ -1,4 +1,5 @@
 <?php 
+
 require('../includes/ORM.class.php');
 require('../includes/Database.class.php');
 
@@ -63,5 +64,15 @@ function generateToken($length){
 	return $token;
 }
 
+function exception($exception){
+
+	$_SESSION['exception'] = $exception;
+
+	header('Location: index.php');
+	exit();
+}
+
+// Set exception handler
+DEVELOP ?: set_exception_handler('exception'); // Library function
 
  ?>

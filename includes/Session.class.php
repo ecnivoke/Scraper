@@ -53,6 +53,20 @@ class Session {
 	public function getCookieExpireTime(){
 		return $this->cookie_time;
 	}
+
+	public function getException(){
+		
+		if(isset($_SESSION['exception'])){
+			// Get exception and reset
+			$e = $_SESSION['exception'];
+			$_SESSION['exception'] = null;
+
+			// Output
+			return $e;
+		}
+		// Output
+		return null;
+	}
 // End Getters
 
 // Setters

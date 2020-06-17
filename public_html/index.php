@@ -49,6 +49,19 @@ if(	!empty($session_handler->getVar('username')) &&
 // Get page from url
 $controller = !empty($_GET['p']) ? $_GET['p'] : '';
 
+if(!DEVELOP){
+	$exception  = $session_handler->getException();
+
+	if($exception){
+		$smarty->assign('title', 'Error');
+		$smarty->assign('error', [$exception->getMessage()]);
+
+		// Show error page
+		$smarty->display(TEMPLATE_DIR.'error.tpl.php');
+		exit();
+	}
+}
+
 if($controller === ''){
 	$smarty->assign('title', 'Home');
 	// Show index page
@@ -79,6 +92,7 @@ else {
 			$smarty->assign('title', $controller);
 			$smarty->display($page_path);
 		}
+		// Page not found
 		else {
 			$smarty->assign('title', 'Page Not Found');
 			$smarty->assign('error', DEVELOP?[$controller_path, $page_path, 'Not Found']:['404 Page not found']);
@@ -87,6 +101,7 @@ else {
 			$smarty->display(TEMPLATE_DIR.'error.tpl.php');
 		}
 	}
+	// No permission
 	else {
 		if(DEVELOP){
 			// Get user group for error display
